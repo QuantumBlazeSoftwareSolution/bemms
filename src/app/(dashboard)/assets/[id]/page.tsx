@@ -91,7 +91,7 @@ export default async function AssetDetailsPage({ params }: { params: Promise<{ i
         <CardContent className="pt-6">
           <div className="space-y-8 pl-4 border-l-2 border-slate-100 relative">
             {relatedTasks.map((task, index) => (
-              <div key={task.id} className="relative">
+              <div key={index} className="relative">
                 <div className="absolute -left-[25px] bg-white p-1 rounded-full border border-slate-200">
                   <Wrench className="w-4 h-4 text-primary" />
                 </div>

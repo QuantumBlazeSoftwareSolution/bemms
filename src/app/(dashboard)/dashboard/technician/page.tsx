@@ -10,7 +10,6 @@ export default function TechnicianDashboard() {
   const me = technicians[0] // Silva A.
   const pending = myAssignedTasks.filter(t => t.status === "PENDING")
   const inProgress = myAssignedTasks.filter(t => t.status === "IN_PROGRESS")
-  const completed = myAssignedTasks.filter(t => t.status === "COMPLETED")
 
   const getPriorityBadge = (priority: string) => {
     switch (priority) {

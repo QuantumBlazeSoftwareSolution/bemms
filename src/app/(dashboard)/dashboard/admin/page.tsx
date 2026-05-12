@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Activity, AlertTriangle, CheckCircle2, Clock, ShieldCheck, Stethoscope, TrendingUp, Users } from "lucide-react"
+import { Activity, AlertTriangle, Clock, ShieldCheck, Stethoscope } from "lucide-react"
 import { MaintenanceTrendChart, UptimeBarChart, TechnicianDonutChart } from "@/components/dashboard-charts"
 import { alerts, recentActivity, technicians, assets, maintenanceTasks } from "@/lib/data"
 import Link from "next/link"

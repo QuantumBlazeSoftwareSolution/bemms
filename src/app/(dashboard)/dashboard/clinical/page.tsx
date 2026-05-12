@@ -1,10 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { AlertCircle, CheckCircle2, Clock, QrCode, TriangleAlert } from "lucide-react"
+import { AlertCircle, Clock, QrCode, TriangleAlert } from "lucide-react"
 import { submittedFaults } from "@/lib/data"
 import Link from "next/link"
-import { QRScannerModal } from "@/components/qr-scanner"
 
 export default function ClinicalDashboard() {
   const getStatusBadge = (status: string) => {

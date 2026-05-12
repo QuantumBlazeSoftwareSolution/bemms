@@ -147,25 +147,28 @@ export function AppSidebar() {
                   <CollapsibleContent>
                     <SidebarMenuSub>
                       <SidebarMenuSubItem>
-                        <Link href="/dashboard/admin" className="w-full">
-                          <SidebarMenuSubButton className={pathname.startsWith("/dashboard/admin") ? "text-primary font-semibold" : ""}>
-                            Admin
-                          </SidebarMenuSubButton>
-                        </Link>
+                        <SidebarMenuSubButton
+                          href="/dashboard/admin"
+                          className={pathname.startsWith("/dashboard/admin") ? "text-primary font-semibold" : ""}
+                        >
+                          Admin
+                        </SidebarMenuSubButton>
                       </SidebarMenuSubItem>
                       <SidebarMenuSubItem>
-                        <Link href="/dashboard/technician" className="w-full">
-                          <SidebarMenuSubButton className={pathname.startsWith("/dashboard/technician") ? "text-primary font-semibold" : ""}>
-                            Technician
-                          </SidebarMenuSubButton>
-                        </Link>
+                        <SidebarMenuSubButton
+                          href="/dashboard/technician"
+                          className={pathname.startsWith("/dashboard/technician") ? "text-primary font-semibold" : ""}
+                        >
+                          Technician
+                        </SidebarMenuSubButton>
                       </SidebarMenuSubItem>
                       <SidebarMenuSubItem>
-                        <Link href="/dashboard/clinical" className="w-full">
-                          <SidebarMenuSubButton className={pathname.startsWith("/dashboard/clinical") ? "text-primary font-semibold" : ""}>
-                            Clinical
-                          </SidebarMenuSubButton>
-                        </Link>
+                        <SidebarMenuSubButton
+                          href="/dashboard/clinical"
+                          className={pathname.startsWith("/dashboard/clinical") ? "text-primary font-semibold" : ""}
+                        >
+                          Clinical
+                        </SidebarMenuSubButton>
                       </SidebarMenuSubItem>
                     </SidebarMenuSub>
                   </CollapsibleContent>
