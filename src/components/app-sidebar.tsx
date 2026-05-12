@@ -10,7 +10,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { Activity, LayoutDashboard, Settings, Wrench, Users, Stethoscope, AlertTriangle } from "lucide-react"
+import { Activity, LayoutDashboard, Settings, Wrench, Users, Stethoscope, AlertTriangle, LogOut } from "lucide-react"
 
 export function AppSidebar() {
   return (
@@ -28,7 +28,7 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
-                <a href="/">
+                <a href="/dashboard">
                   <SidebarMenuButton>
                     <LayoutDashboard />
                     <span>Dashboard</span>
@@ -71,11 +71,15 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter className="p-4">
-        <div className="flex items-center gap-2">
-          <Settings className="w-5 h-5 text-muted-foreground" />
+      <SidebarFooter className="p-4 border-t border-slate-100">
+        <div className="flex items-center gap-2 text-muted-foreground hover:text-slate-800 cursor-pointer transition-colors">
+          <Settings className="w-5 h-5" />
           <span className="text-sm font-medium">Settings</span>
         </div>
+        <a href="/login" className="flex items-center gap-2 mt-3 text-destructive/70 hover:text-destructive transition-colors cursor-pointer">
+          <LogOut className="w-5 h-5" />
+          <span className="text-sm font-medium">Logout</span>
+        </a>
       </SidebarFooter>
     </Sidebar>
   )
