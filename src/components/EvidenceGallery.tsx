@@ -62,7 +62,7 @@ export function EvidenceGallery({ images }: EvidenceGalleryProps) {
           <div className="absolute top-4 right-4 flex items-center gap-3 z-50">
             <a
               href={selectedImage}
-              download={`evidence-${Date.now()}.png`}
+              download="evidence-photo.png"
               target="_blank"
               rel="noreferrer"
               onClick={(e) => e.stopPropagation()}

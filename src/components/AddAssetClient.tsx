@@ -32,6 +32,17 @@ export function AddAssetClient() {
   const qrInstanceRef = useRef<any>(null);
   const router = useRouter();
 
+  const stopScanner = (instance: any) => {
+    const activeInstance = instance || qrInstanceRef.current;
+    if (activeInstance && activeInstance.isScanning) {
+      activeInstance.stop().then(() => {
+        console.log("Scanner stopped successfully");
+      }).catch((e: any) => {
+        console.warn("Error stopping scanner", e);
+      });
+    }
+  };
+
   // Handle QR scanner initialization and shutdown
   useEffect(() => {
     let html5Qrcode: any = null;
@@ -74,17 +85,6 @@ export function AddAssetClient() {
       }
     };
   }, [scannerOpen]);
-
-  const stopScanner = (instance: any) => {
-    const activeInstance = instance || qrInstanceRef.current;
-    if (activeInstance && activeInstance.isScanning) {
-      activeInstance.stop().then(() => {
-        console.log("Scanner stopped successfully");
-      }).catch((e: any) => {
-        console.warn("Error stopping scanner", e);
-      });
-    }
-  };
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
