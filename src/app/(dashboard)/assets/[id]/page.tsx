@@ -1,6 +1,8 @@
 import { getAssetByIdAction } from "@/lib/actions/assets";
 import { getAllTasks } from "@/lib/db/crud/tasks/read";
 import { getUserById } from "@/lib/db/crud/users/read";
+import { getFaultById } from "@/lib/db/crud/faults/read";
+import { EvidenceGallery } from "@/components/EvidenceGallery";
 import { notFound } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -26,7 +28,7 @@ export default async function AssetDetailsPage({ params }: { params: Promise<{ i
   const allTasks = await getAllTasks();
   const dbRelatedTasks = allTasks.filter((t) => t.assetId === asset.id);
 
-  // Resolve technicians' names for each task
+  // Resolve technicians' names and breakdown evidence photos for each task
   const relatedTasks = await Promise.all(
     dbRelatedTasks.map(async (task) => {
       let techName = "Unassigned";
@@ -34,9 +36,21 @@ export default async function AssetDetailsPage({ params }: { params: Promise<{ i
         const user = await getUserById(task.technicianId);
         if (user) techName = user.name;
       }
+
+      let images: string[] = [];
+      const match = task.notes?.match(/breakdown report #([A-Z0-9-]+)/i);
+      const faultId = match ? match[1] : null;
+      if (faultId) {
+        const fault = await getFaultById(faultId);
+        if (fault) {
+          images = fault.images || [];
+        }
+      }
+
       return {
         ...task,
         technician: techName,
+        images,
       };
     })
   );
@@ -166,6 +180,7 @@ export default async function AssetDetailsPage({ params }: { params: Promise<{ i
                         {task.notes}
                       </div>
                     )}
+                    <EvidenceGallery images={task.images} />
                     {task.spareParts && task.spareParts !== "None" && (
                       <div className="mt-1 text-xs text-slate-500">
                         🛠️ Spare parts used: <span className="font-semibold">{task.spareParts}</span>

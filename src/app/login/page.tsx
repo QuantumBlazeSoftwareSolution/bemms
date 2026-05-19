@@ -76,12 +76,10 @@ export default function LoginPage() {
       <div className="w-full max-w-md relative z-10">
         {/* Logo */}
         <div className="flex flex-col items-center mb-8">
-          <div className="flex items-center justify-center w-16 h-16 rounded-2xl bg-primary shadow-lg shadow-primary/25 mb-4">
-            <Stethoscope className="w-8 h-8 text-white" />
-          </div>
-          <h1 className="text-2xl font-bold text-slate-900">BEMMS</h1>
+          <img src="/logo.png" alt="BEMMS Logo" className="w-16 h-16 rounded-2xl shadow-xl border border-slate-200 object-cover mb-4 animate-in zoom-in-95 duration-500" />
+          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">BEMMS</h1>
           <p className="text-sm text-slate-500 mt-1">
-            Biomedical Equipment Maintenance System
+            Biomedical Equipment Management System
           </p>
         </div>
 
@@ -231,7 +229,7 @@ export default function LoginPage() {
 
         <div className="flex items-center justify-center gap-2 mt-6 text-xs text-slate-400">
           <ShieldCheck className="w-3.5 h-3.5" />
-          <span>Secured for Sri Lankan Hospital Use · BEMMS v1.0</span>
+          <span>Secured for Sri Lankan Hospital Use · BEMMS v2.0</span>
         </div>
       </div>
     </div>

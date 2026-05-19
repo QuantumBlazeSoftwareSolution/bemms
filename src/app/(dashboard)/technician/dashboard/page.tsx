@@ -7,6 +7,7 @@ import { getTasksByTechnician, getAllTasks } from "@/lib/db/crud/tasks/read";
 import { getAssetById } from "@/lib/db/crud/assets/read";
 import { getFaultById } from "@/lib/db/crud/faults/read";
 import { getRecentActivities } from "@/lib/db/crud/activities/read";
+import { EvidenceGallery } from "@/components/EvidenceGallery";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 
@@ -165,28 +166,7 @@ export default async function TechnicianDashboard() {
                       </div>
                     )}
 
-                    {task.images && task.images.length > 0 && (
-                      <div className="mt-3">
-                        <span className="text-xs font-semibold text-slate-500 block mb-1.5">🖼️ Evidence Photos ({task.images.length}):</span>
-                        <div className="flex flex-wrap gap-2">
-                          {task.images.map((imgUrl, i) => (
-                            <a
-                              key={i}
-                              href={imgUrl}
-                              target="_blank"
-                              rel="noreferrer"
-                              className="relative w-16 h-16 rounded-md overflow-hidden border border-slate-200 hover:border-primary transition-all duration-200 cursor-zoom-in hover:scale-105 inline-block shadow-sm"
-                            >
-                              <img
-                                src={imgUrl}
-                                alt={`Evidence ${i + 1}`}
-                                className="w-full h-full object-cover"
-                              />
-                            </a>
-                          ))}
-                        </div>
-                      </div>
-                    )}
+                    <EvidenceGallery images={task.images} />
                   </div>
                 </div>
                 <div className="flex items-center gap-3 pl-7 sm:pl-0">

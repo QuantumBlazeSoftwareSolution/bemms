@@ -109,7 +109,7 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarHeader className="p-4 border-b border-slate-100">
         <div className="flex items-center gap-2 text-primary font-bold text-xl">
-          <Stethoscope className="w-6 h-6" />
+          <img src="/logo.png" alt="BEMMS Logo" className="w-7 h-7 rounded-md object-cover border border-slate-200 shadow-sm" />
           <span>BEMMS</span>
         </div>
         <p className="text-xs text-muted-foreground mt-1">Biomedical Equipment Maintenance</p>
