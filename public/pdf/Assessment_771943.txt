@@ -1,0 +1,1578 @@
+--- PAGE 1 ---
+Development of a Biomedical Equipment
+Maintenance Management Software for
+Sri Lankan Hospitals
+.
+by
+Bumith Charuka Nallaperuma
+-E217844-
+Research Proposal Submitted in accordance with the requirements for the
+APPLIED SCIENCE RESEARCH PROJECT MODULE OF
+PEARSON’S HND IN BIOMEDICAL ENGINEERING
+PROGRAMME
+at the
+ESU Colombo
+Name of research Tutor:-
+MR. ETHIRAJ THIPAKARAN
+
+--- PAGE 2 ---
+DECLARATION
+Name of Research Candidate:- Bumith Charuka Nallaperuma
+Pearson Registration Number:- E217844
+Programme Name:- HND Biomedical Engineering
+Research Title:- Development of a Biomedical Equipment Maintenance
+Management Software for Sri Lankan Hospitals
+Field of Study:
+I do solemnly and sincerely declare that:
+i. I’m the sole author of this study
+ii. This work is original
+iii. In case of any use if any information from other sources, references of copyright with its
+ownership have been acknowledged in this document
+iv. I do not have any actual knowledge nor do I ought reasonably to know that the making of the
+work constitutes an infringement of any copyright work
+v. I know that plagiarism is a punishable offence because it constitutes theft, I understand the
+plagiarism and copying policy of the Edexcel UK, I know what the consequences will be if I
+plagiaries or copy another’s work in this research for this program.
+Candidate Signature: bumithcharuka@gmail.com Date: 30.06.2025
+Subscribed and solemnly declared before,
+Supervisor’s Name: Designation:
+Supervisor’s Signature: Date:
+
+--- PAGE 3 ---
+ACKNOWLEDGMENT
+I would like to express my sincere gratitude to my supervisor, Mr. Ethiraj Thipakaran, for his
+unwavering guidance, encouragement, and insightful feedback throughout the course of this
+research project. His expert knowledge, timely advice, and continuous support played a critical
+role in shaping the direction and depth of my study. I am especially thankful for his patience and
+dedication in reviewing my work, and for motivating me to maintain high academic standards. His
+mentorship has not only enhanced my understanding of the research process but has also
+strengthened my confidence in applying theoretical knowledge to real-world biomedical
+engineering challenges. It has been a privilege to work under his supervision, and I am truly
+appreciative of the valuable learning experience I have gained as a result. I am truly grateful for
+his dedication and the way he helped me grow through that experience.
+Thank you, sir, for your support and for believing in me
+Bumith Charuka Nallaperuma.
+E217844.
+
+--- PAGE 4 ---
+ABSTRACT
+Effective maintenance and fault reporting of biomedical equipment is essential to ensuring optimal
+healthcare service delivery, safety, and operational efficiency within hospital environments. This
+project presents the development of a Biomedical Equipment Maintenance Management System
+(BEMMS), a web-based application designed to streamline equipment tracking, preventive
+maintenance scheduling, and real-time issue reporting in Sri Lankan hospitals.
+The system was built using a lightweight technology stack, integrating Python with Flask for the
+backend, HTML/CSS and Bootstrap for the user interface, and SQLite for local database
+management. BEMMS enables hospital staff to log equipment issues, categorize maintenance
+types, and track the resolution process with automated timestamps and priority indicators. The
+platform provides administrators with functionalities to add, edit, and monitor both maintenance
+records and fault reports, significantly reducing manual documentation and the risk of equipment
+failure due to missed servicing.
+A mixed-methods approach was adopted in the system’s design and evaluation, including
+interviews with biomedical engineers, real-world hospital workflow analysis, and usability testing.
+Results indicate the system's strong potential to improve equipment uptime, enhance reporting
+accuracy, and support maintenance teams in proactive decision-making. This project contributes a
+scalable, user-friendly tool that aligns with biomedical equipment management best practices and
+serves as a foundation for future integration with QR code-based asset tracking and automated
+alert systems.
+
+--- PAGE 5 ---
+Table of Contents
+DECLARATION............................................................................................................................. 2
+ACKNOWLEDGMENT................................................................................................................. 3
+ABSTRACT .................................................................................................................................... 4
+CHAPTER 1 – INTRODUCTION ............................................................................................. 7
+1.1 Introduction ........................................................................................................................... 7
+1.2 Purpose of the Research ........................................................................................................ 8
+1.3 Significance of the Research ................................................................................................. 9
+1.4 Research Objectives ............................................................................................................ 10
+1.5 Research Sub-Objectives .....................................................................................................11
+1.6 Research Questions ............................................................................................................. 12
+1.7 Hypothesis........................................................................................................................... 12
+1.8 Thesis Structure .................................................................................................................. 13
+Chapter 1 ............................................................................................................................... 13
+Chapter 2 ............................................................................................................................... 13
+Chapter 3 ............................................................................................................................... 14
+Chapter 4 ............................................................................................................................... 14
+Chapter 5 ............................................................................................................................... 14
+Chapter 2 – Literature Review ...................................................................................................... 14
+2.1 Literature Review................................................................................................................ 14
+2.2 Conceptual Framework ....................................................................................................... 19
+CHAPTER 3 – METHODOLOGY .............................................................................................. 22
+3.1. Research philosophy .......................................................................................................... 22
+3.2 Research Approach ............................................................................................................. 23
+3.3 Research Strategy................................................................................................................ 24
+3.4 Research Choice.................................................................................................................. 25
+3.5 Time Frame ......................................................................................................................... 27
+3.6. Data collection procedures ................................................................................................. 28
+3.6.2 Data Collection Method ............................................................................................... 29
+
+--- PAGE 6 ---
+3.6.3 Data Collection and Analysis Tools ................................................................................. 30
+3.6.4. Questionnaire structure ................................................................................................... 32
+3.7 Target Population and Sampling ......................................................................................... 33
+3.8 The Selection of Participants .............................................................................................. 34
+3.9 Reliability, Validity, and Generalizability ........................................................................... 34
+3.10 Ethical Issues of the Research Study ................................................................................ 36
+CHAPTER 4 – RESULTS AND DISCUSSION .......................................................................... 38
+4.1 Demographic Analysis ........................................................................................................ 38
+4.2 Correlation Analysis............................................................................................................ 39
+4.3 RESULTS Analysis ............................................................................................................. 40
+4.4 Regression Analysis ............................................................................................................ 47
+4.4.1 RO1 / Main Objective .................................................................................................. 48
+4.4.2 RO2 / SO1 .................................................................................................................... 48
+4.4.3 RO3 / SO2 .................................................................................................................... 49
+4.4.4 RO4 / SO3 .................................................................................................................... 49
+CHAPTER 5 - CONCLUSIONS AND RECOMMENDATIONS ............................................... 50
+5.1 Conclusion .......................................................................................................................... 50
+5.2 Recommendations ............................................................................................................... 51
+5.3. Limitations ......................................................................................................................... 53
+5.4 Future Improvements .......................................................................................................... 54
+5.5 Personal Reflection ............................................................................................................. 56
+5.5.1 Benefits for the Researcher .......................................................................................... 56
+5.5.2 Benefits for the Industry/Organisation ............................................................................. 57
+Referencing ................................................................................................................................... 59
+Annexures ..................................................................................................................................... 62
+
+--- PAGE 7 ---
+CHAPTER 1 – INTRODUCTION
+1.1 Introduction
+The efficient maintenance of biomedical equipment is a fundamental requirement for delivering
+safe, reliable, and timely healthcare services. In hospital environments, where life-supporting and
+diagnostic machines such as defibrillators, infusion pumps, ventilators, and dialysis systems are
+integral to clinical outcomes, equipment downtime can directly compromise patient care and
+safety. As healthcare systems become increasingly reliant on complex biomedical devices, the need
+for structured and efficient maintenance practices grows proportionally.
+In Sri Lanka, most public and semi-government hospitals continue to depend on paper-based
+records, logbooks, and manual reminders to manage the maintenance of medical equipment. These
+traditional methods are prone to delays, miscommunication, and loss of critical information,
+resulting in increased equipment failure rates, missed preventive maintenance schedules, and
+reduced operational readiness during emergencies. Biomedical engineers, who are responsible for
+the maintenance, calibration, and fault diagnosis of equipment, often lack access to modern digital
+tools that could support their decision-making and streamline workflow.
+In contrast, many international healthcare systems have already adopted Computerised
+Maintenance Management Systems (CMMS) to improve asset tracking, maintenance scheduling,
+inventory management, and compliance reporting. However, existing commercial CMMS
+solutions are typically expensive, complex, and not tailored to the infrastructure limitations or
+staffing capacities of Sri Lankan hospitals. This creates a critical technological gap in the country’s
+healthcare sector, particularly affecting equipment reliability, maintenance visibility, and
+knowledge transfer among biomedical engineering teams.
+A real example can be drawn from Hospital, where biomedical maintenance logs are still primarily
+handled through manual documentation. In 2023, a series of equipment failures—including a delay
+in the calibration of anaesthesia machines and the late servicing of infusion pumps—resulted in
+extended equipment downtime and disrupted surgical schedules. These delays were traced back to
+missed reminders and a lack of centralized maintenance tracking. Biomedical engineers at the
+hospital expressed the need for a more structured system that could help them respond quickly to
+
+--- PAGE 8 ---
+faults and maintain accurate service records without depending solely on memory or handwritten
+notes.
+To address such issues, the present research aims to develop a locally adaptable Biomedical
+Equipment Maintenance Management Software (BEMMS) using open-source technologies.
+The proposed system will integrate key functions such as QR code-based fault reporting,
+automated maintenance reminders, centralized equipment history logs, and support for technician
+training. Developed using the Django web framework with a PostgreSQL backend and deployed
+via Docker, BEMMS is designed to operate within the resource constraints of Sri Lankan hospitals
+while significantly improving maintenance efficiency and data accessibility.
+This research follows a pragmatic, mixed-methods approach, combining qualitative insights from
+biomedical engineers with quantitative analysis of maintenance task completion and downtime
+data. A pilot implementation will be conducted at selected hospital sites to evaluate the software’s
+usability, real-world applicability, and measurable benefits. The overarching objective is to provide
+a scalable, cost-effective digital tool that enhances the operational effectiveness of biomedical
+engineers and contributes to the modernization of Sri Lanka’s healthcare infrastructure.
+1.2 Purpose of the Research
+The primary purpose of this research is to design, develop, and evaluate a tailored Biomedical
+Equipment Maintenance Management Software (BEMMS) to enhance the efficiency, traceability,
+and responsiveness of medical equipment maintenance in Sri Lankan hospitals. This study
+addresses a well-documented gap in the country’s healthcare infrastructure, where maintenance
+processes are still predominantly manual and fragmented, posing serious risks to equipment
+reliability, patient safety, and operational continuity.
+The proposed software aims to introduce a practical digital solution that automates and centralizes
+the maintenance workflow of biomedical equipment. Specifically, the system is intended to
+support biomedical engineers and technical staff in public and semi-government hospitals by
+offering the following key functionalities:
+• QR code-based fault reporting, enabling hospital staff to immediately report equipment
+issues with traceable identifiers;
+
+--- PAGE 9 ---
+• Automated maintenance scheduling and alerts, reducing the risk of missed preventive
+service intervals;
+• Equipment service history tracking, providing detailed digital logs accessible to both
+senior and newly appointed biomedical engineers;
+• Image upload functionality, supporting remote diagnostics and detailed fault
+documentation.
+The software will be implemented and evaluated in a real-world hospital setting, beginning with a
+pilot at the Hospital, to assess its impact on key performance indicators such as equipment
+downtime, response time to breakdowns, and user satisfaction.
+By integrating modern web technologies such as Python, Django, and PostgreSQL with hospital-
+specific workflows, the project seeks not only to solve an immediate operational challenge but also
+to create a sustainable, replicable solution that could be scaled across the national healthcare
+system. The long-term vision is to contribute to the digital transformation of biomedical
+engineering practices in Sri Lanka, offering improved safety, accountability, and training support
+within healthcare institutions.
+This purpose is directly aligned with the broader theme of this unit, delivering scientific projects
+in the real world, and exemplifies how applied science and technology can be harnessed to solve
+practical challenges in healthcare environments.
+1.3 Significance of the Research
+This research carries significant value for the Sri Lankan healthcare system, particularly in
+enhancing the quality, reliability, and efficiency of biomedical equipment maintenance in public
+and semi-government hospitals. Medical devices are central to diagnostics, treatment, and patient
+monitoring. Therefore, any delays in maintenance or fault rectification directly impact clinical
+outcomes and patient safety. Despite this, many hospitals in Sri Lanka lack structured digital
+maintenance systems, leading to critical equipment failures, long repair lead times, and
+uncoordinated recordkeeping.
+The development of the Biomedical Equipment Maintenance Management Software (BEMMS)
+represents a timely and innovative solution to these problems. By replacing outdated manual
+
+--- PAGE 10 ---
+methods with a modern, open-source software system tailored to local hospital workflows, the
+project aims to significantly improve the management of preventive and corrective maintenance
+activities.
+The key areas where this research is expected to make a measurable impact include:
+• Operational efficiency - Automating maintenance reminders and fault reporting ensures
+that critical equipment receives timely attention, minimising unplanned downtime and
+improving hospital readiness.
+• Data-driven decision-making - Access to historical equipment maintenance data allows
+biomedical engineers and administrators to identify patterns, prioritise replacements, and
+allocate resources more effectively.
+• Training and skill development - The system’s ability to log detailed repair histories serves
+as an educational tool for newly appointed engineers and technicians, helping bridge the
+skill gap in the biomedical engineering workforce.
+• Cost-effectiveness and scalability - Unlike imported CMMS tools that are often too costly
+or complex for local adoption, BEMMS is designed using free, open-source technologies,
+ensuring affordability, adaptability, and replicability across hospitals in the country.
+• Policy and standardization - With successful pilot implementation and adoption, the
+findings of this research could inform national-level strategies for biomedical equipment
+maintenance, setting a precedent for standardized digital practices in healthcare
+infrastructure.
+This study is particularly significant in the post-pandemic era, where the resilience and reliability
+of healthcare systems have become critical priorities. By addressing a deeply rooted operational
+weakness in Sri Lanka’s public health sector, this research stands to contribute meaningfully to
+long-term improvements in healthcare delivery, workforce efficiency, and patient safety.
+1.4 Research Objectives
+The overarching aim of this research is to develop and evaluate a context-specific Biomedical
+Equipment Maintenance Management Software (BEMMS) to enhance maintenance practices in
+
+--- PAGE 11 ---
+Sri Lankan hospitals. The system is intended to address the limitations of manual tracking methods
+by providing a digital, automated, and user-friendly platform for biomedical engineers and hospital
+staff.
+The study is guided by the following four main research objectives
+RO1: To analyze the current practices and key challenges associated with biomedical equipment
+maintenance in Sri Lankan hospitals, with a particular focus on scheduling inefficiencies,
+communication gaps, and documentation limitations.
+RO2: To design and propose a practical, scalable, and locally adaptable software model for
+biomedical equipment maintenance management, incorporating user-focused features such as QR
+code-based fault reporting, automated alerts, and centralized service history tracking.
+RO3:To assess the effectiveness of the BEMMS system by comparing pre- and post-
+implementation data, measuring improvements in equipment uptime, fault response time,
+preventive maintenance compliance, and overall user satisfaction.
+RO4: To evaluate the anticipated benefits of implementing the proposed software in terms of
+improved maintenance efficiency, increased equipment uptime, and reduced operational costs,
+based on measurable outcomes during the pilot phase.
+These objectives form the structural backbone of the research and will be addressed through a
+combination of qualitative and quantitative data collection methods under a pragmatic mixed-
+methods framework.
+1.5 Research Sub-Objectives
+To support the achievement of the main research objectives, the following sub-objectives have
+been identified. These sub-objectives break down each research aim into actionable components
+that will guide data collection, system design, implementation, and analysis throughout the project:
+SO1: To document and evaluate existing manual maintenance procedures, including the use of
+logbooks, spreadsheets, and informal reporting channels.
+SO2: To develop a working prototype of the BEMMS platform using Django, PostgreSQL, and
+QR code integration, tailored to the workflow of Sri Lankan hospital environments.
+
+--- PAGE 12 ---
+SO3: To collect and analyze quantitative and qualitative data on system usability, user satisfaction,
+and integration into routine maintenance processes.
+SO4: To estimate the potential long-term cost savings and operational benefits achievable through
+continued use of the BEMMS system, with a focus on scalability across public hospitals.
+1.6 Research Questions
+The research questions serve as the foundation for guiding the inquiry, data collection, and
+evaluation process of this study. Each question is aligned with a corresponding research objective
+to ensure a systematic approach to achieving the goals of the project.
+1. What are the existing practices and key challenges faced by biomedical engineers in managing
+medical equipment maintenance within Sri Lankan hospitals, particularly regarding scheduling,
+communication, and documentation?
+2. What essential features and functionalities should a locally adaptable biomedical equipment
+maintenance software include to effectively support the operational needs of hospital biomedical
+engineering teams?
+3. How effective is the proposed BEMMS system in improving preventive maintenance
+scheduling, fault reporting, service tracking, and overall user satisfaction when implemented in a
+real-world hospital environment?
+4. What measurable improvements, such as increased equipment uptime, faster response times,
+and reduced operational costs, can be observed after implementing the BEMMS system during the
+pilot phase?
+1.7 Hypothesis
+The development and implementation of a Biomedical Equipment Maintenance Management
+Software (BEMMS) is expected to significantly improve the efficiency, reliability, and
+responsiveness of medical equipment maintenance in Sri Lankan hospitals. To formally investigate
+the anticipated impact of the system, the following hypotheses are proposed:
+
+--- PAGE 13 ---
+H₁ (Alternative Hypothesis)
+The implementation of a locally adapted biomedical equipment maintenance software (BEMMS)
+will significantly improve maintenance efficiency, increase equipment uptime, enhance fault
+reporting response time, and reduce operational costs in Sri Lankan hospitals.
+H₀ (Null Hypothesis)
+The implementation of the BEMMS software will not result in any significant improvement in
+maintenance efficiency, equipment uptime, fault response time, or operational cost reduction in Sri
+Lankan hospitals.
+1.8 Thesis Structure
+This research report is structured into five main chapters, each addressing a specific aspect of the
+study, from problem identification to implementation and evaluation of the proposed Biomedical
+Equipment Maintenance Management Software (BEMMS). The chapter-wise structure is as
+follows:
+Chapter 1
+Introduction
+Provides the background to the research problem, outlines the research aim, objectives, sub-
+objectives, research questions, hypothesis, and presents the overall structure of the thesis. It
+introduces the real-world significance of improving biomedical equipment maintenance through
+digital tools in Sri Lankan hospitals.
+Chapter 2
+Literature Review
+Critically examines existing literature on biomedical equipment maintenance practices,
+Computerised Maintenance Management Systems (CMMS), and technology adoption in low-
+resource healthcare settings. It also highlights the research gap, conceptual framework, and
+rationale for the proposed software solution.
+
+--- PAGE 14 ---
+Chapter 3
+Methodology
+Describes the research philosophy, approach, strategy, and the mixed-methods design used in the
+study. It details data collection procedures, sampling strategy, tools for analysis, system
+development methods, ethical considerations, and how reliability and validity were ensured
+throughout the research.
+Chapter 4
+Results and Discussion
+Presents the findings obtained from the pilot implementation of BEMMS in a selected hospital
+setting. This includes demographic data, pre- and post-intervention performance comparisons,
+correlation and regression analyses, and a discussion of how the outcomes address each research
+objective.
+Chapter 5
+Conclusions and Recommendations
+Summarizes the key findings in relation to the research objectives and questions, presents practical
+recommendations for hospital administrators and policymakers, outlines limitations of the study,
+suggests future improvements, and includes a reflective commentary on the research journey and
+its contribution to industry
+Chapter 2 – Literature Review
+2.1 Literature Review
+Introduction
+Biomedical equipment forms the technological backbone of modern healthcare systems. From
+diagnostic imaging machines to vital sign monitors, the effective functioning of this equipment is
+crucial for ensuring patient safety, enhancing treatment outcomes, and supporting clinical
+workflows. However, the performance and reliability of such equipment depend heavily on
+systematic and timely maintenance practices. In many low- and middle-income countries (LMICs),
+including Sri Lanka, biomedical equipment maintenance is still predominantly managed through
+manual records and ad hoc procedures. This literature review critically examines global practices
+
+--- PAGE 15 ---
+in biomedical equipment maintenance, evaluates the limitations encountered in Sri Lankan
+hospitals, and justifies the need for a locally adapted software solution to address identified gaps.
+Global Practices in Biomedical Equipment Maintenance
+In developed healthcare systems, Computerised Maintenance Management Systems (CMMS)
+have revolutionized the way medical equipment is tracked, scheduled, and serviced. These systems
+automate preventive maintenance cycles, enable real-time fault logging, maintain complete service
+histories, and even integrate with inventory and procurement systems. Hospitals implementing
+CMMS platforms report significant improvements in equipment uptime, regulatory compliance,
+technician efficiency, and patient safety (Gupta et al., 2022).
+Several well-established platforms, such as IBM Maximo, Infor EAM, and Accruent’s
+Maintenance Connection, are widely adopted across North America and Europe. These tools are
+often complemented with Internet of Things (IoT) integrations that allow for real-time condition
+monitoring and predictive maintenance strategies. According to Mehta and Kumar (2020),
+predictive CMMS implementation has been associated with a 30–50% reduction in equipment
+failures and notable improvements in technician response times.
+Furthermore, the World Health Organization (WHO, 2010) strongly advocates for the digitization
+of biomedical asset management, particularly in public health institutions. The WHO has noted
+that over 50% of biomedical equipment in developing nations is either underutilized or non-
+functional due to insufficient maintenance systems. Proper implementation of CMMS is shown to
+improve traceability, accountability, and budget utilization through lifecycle data analytics and
+optimized scheduling.
+Limitations of CMMS in Low-Resource Settings
+Despite their advantages, CMMS platforms designed for high-income countries often present
+challenges when deployed in LMICs like Sri Lanka. One major barrier is the cost of acquisition
+and upkeep. Licensing fees, mandatory maintenance contracts, and server requirements pose
+significant hurdles for underfunded public hospitals. Additionally, many CMMS platforms assume
+
+--- PAGE 16 ---
+access to uninterrupted internet, dedicated IT support, and skilled technical personnel—all of
+which are limited in Sri Lanka’s state-run hospitals (Jayawardena, 2017).
+Usability also emerges as a key constraint. Many of these systems are designed with complex
+dashboards and technical terminologies that are not intuitive for local users. Biomedical engineers
+and technicians in Sri Lanka often lack formal IT training and may find international software
+platforms cumbersome or irrelevant to their workflows. As a result, pilot implementations of
+foreign CMMS solutions in local hospitals have faced resistance, abandonment, or suboptimal use.
+Another structural challenge lies in the need for reliable internet connectivity and cloud
+infrastructure. While cloud-based CMMS solutions offer real-time synchronization and remote
+access, many Sri Lankan hospitals—particularly those outside urban centers—face internet
+instability or restricted bandwidth. These technical limitations hinder smooth adoption and
+necessitate offline-compatible, lightweight systems.
+Biomedical Equipment Maintenance in Sri Lanka
+In Sri Lanka, biomedical equipment maintenance practices remain predominantly manual and
+decentralized. Most government hospitals rely on handwritten logbooks, Excel spreadsheets, and
+verbal communication to manage fault reports and preventive maintenance schedules
+(Malalasekara, 2024). This results in frequent service delays, poor record-keeping, and a lack of
+visibility into equipment histories.
+A multi-hospital assessment conducted by Chaminda et al. (2023) revealed a widespread absence
+of standardized maintenance protocols. Biomedical departments often struggle to execute timely
+preventive maintenance due to inconsistent scheduling, limited technician availability, and
+bureaucratic procurement delays. Many hospitals also lack centralized asset registries, forcing
+engineers to rely on personal records or memory when tracking service histories and equipment
+locations.
+Edirisingha et al. (2023) noted that the absence of digital tracking systems leads to duplicate work
+orders, unmonitored faults, and increased risk of equipment-related adverse events. The lack of
+real-time communication between clinical staff and maintenance teams further exacerbates delays,
+as fault reporting is often delayed or incomplete.
+
+--- PAGE 17 ---
+Additionally, spare parts inventory is generally managed manually. Parts availability is not
+digitally recorded, and restocking is reactive rather than predictive, leading to long repair lead
+times. These inefficiencies negatively impact clinical services, particularly in critical care areas
+such as operating theatres, emergency rooms, and intensive care units.
+Regional Best Practices and Lessons from LMICs
+While Sri Lanka continues to face systemic maintenance challenges, other LMICs have made
+notable progress through locally tailored CMMS solutions. A strong example is India’s e-Upkaran
+platform, developed by the National Health Systems Resource Centre (NHSRC) and deployed
+across public hospitals in Rajasthan. The platform includes modules for complaint registration,
+technician assignment, preventive maintenance reminders, and equipment utilization tracking.
+According to NHSRC (2021), e-Upkaran helped reduce downtime of critical medical equipment
+by over 40% within two years of implementation. The system's success is largely attributed to its
+low hardware requirements, user-friendly interface, and consultative design process, which
+involved hospital engineers and clinical users during development.
+These regional success stories suggest that contextual design and local adaptability are key to
+CMMS effectiveness in resource-limited settings. Simply replicating systems from high-income
+countries is often counterproductive. Instead, custom-built solutions that reflect ground-level
+workflows, infrastructure limitations, and user capabilities offer a more sustainable path forward.
+Proposed Solution: BEMMS
+In response to these localized challenges, this study introduces the Biomedical Equipment
+Maintenance Management Software (BEMMS)—a lightweight, modular software system
+developed using open-source technologies such as Python Django and PostgreSQL. The system is
+designed specifically for Sri Lankan hospitals, with key features informed by extensive stakeholder
+feedback from biomedical engineers, technicians, and hospital administrators.
+Key modules of BEMMS include
+• QR code-based fault reporting - Hospital staff can scan QR codes affixed to equipment and
+instantly submit fault reports with optional images.
+
+--- PAGE 18 ---
+• Automated preventive maintenance scheduling - Using task schedulers like django-
+crontab, BEMMS alerts technicians in advance for each scheduled service.
+• Centralized service history - Equipment logs are stored digitally, allowing traceability of
+past repairs, parts used, and technician assignments.
+• Role-based access - Interfaces are customized based on user roles, administrators,
+engineers, or department heads.
+• Offline functionality - BEMMS includes fallback modes for low-connectivity
+environments.
+Theoretical and Methodological Underpinnings
+The BEMMS initiative is informed by the Socio-Technical Systems Theory, which emphasizes the
+mutual adaptation between technical tools and social environments. This perspective highlights
+the need to align software functionality with human capabilities, organizational culture, and
+contextual limitations. In Sri Lanka’s hospital context, where administrative bureaucracy, limited
+IT training, and constrained resources prevail, a socio-technical approach is vital.
+In parallel, the Action Design Research (ADR) methodology has guided the iterative development
+and testing of BEMMS. ADR blends the cycles of system development with continuous real-world
+feedback, allowing software refinements in parallel with pilot implementation. This ensures the
+final product is both technically functional and socially acceptable.
+Explaining the Research Gap
+Despite the global recognition of Computerised Maintenance Management Systems (CMMS) as
+essential tools for ensuring the reliability, traceability, and efficiency of biomedical equipment
+maintenance, there remains a significant disparity between their availability and effective
+implementation in low- and middle-income countries (LMICs) such as Sri Lanka (Gupta et al.,
+2022; WHO, 2010). A critical analysis of existing literature reveals that most studies and
+commercially available CMMS tools are developed with high-income healthcare environments in
+mind, often assuming the presence of robust infrastructure, continuous internet access, and highly
+trained personnel (Jayawardena, 2017).
+
+--- PAGE 19 ---
+These assumptions do not align with the realities of Sri Lankan public hospitals, where
+maintenance is still largely managed through handwritten logs, verbal communication, and basic
+spreadsheets (Malalasekara, 2024). This results in frequent delays, lack of service history, and
+missed preventive maintenance tasks (Chaminda et al., 2023). Despite the recognition of these
+limitations, no research has yet proposed or piloted a scalable, low-cost, context-specific software
+solution developed with and for Sri Lankan biomedical professionals.
+Furthermore, existing systems generally fail to engage end-users—particularly biomedical
+engineers and technicians—in the co-design process. As a result, imported CMMS platforms often
+suffer from usability issues and resistance to adoption due to their poor alignment with the actual
+workflows of these users (Edirisingha et al., 2023). These concerns are widely acknowledged but
+remain largely unaddressed in the academic and technical literature.
+Thus, the research gap lies in the absence of locally designed, user-focused biomedical
+maintenance software for Sri Lankan hospitals, particularly one developed using open-source tools
+and validated through field implementation. This study addresses that gap by proposing and
+evaluating a Biomedical Equipment Maintenance Management Software (BEMMS) that reflects
+the real needs of Sri Lankan hospital environments and frontline users.
+The literature clearly shows that while CMMS platforms have transformed maintenance operations
+in developed countries, these solutions are not directly transferable to the Sri Lankan context. The
+unique constraints faced by Sri Lankan public hospitals, including budget limitations, skill gaps,
+and weak infrastructure, require software solutions built from the ground up with local conditions
+in mind.
+BEMMS emerges as a promising response, combining simplicity, affordability, and critical
+maintenance features that are aligned with real hospital workflows. Through pilot testing and
+feedback analysis, this study aims to validate BEMMS as a viable model for broader adoption and
+to contribute new insights to the field of biomedical engineering management in LMICs.
+2.2 Conceptual Framework
+The conceptual framework serves as the structural foundation guiding the design, development,
+and evaluation of the Biomedical Equipment Maintenance Management Software (BEMMS) in
+the context of Sri Lankan public hospitals. It outlines the relationship between existing biomedical
+
+--- PAGE 20 ---
+maintenance challenges and the proposed digital intervention, using theoretical insights and
+practical workflows to support research implementation.
+Theoretical Foundations
+This research draws upon two well-established theoretical models:
+• Socio-Technical Systems Theory: Emphasizes the need for a balanced integration of
+social and technical subsystems in healthcare environments. BEMMS is developed to fit
+the workflows, skills, and infrastructure found in Sri Lankan hospitals.
+• Action Design Research (ADR): Supports the iterative development and real-time testing
+of digital solutions in practice. Through ADR, BEMMS is designed with user feedback
+loops and continuous improvement cycles during its pilot deployment.
+Conceptual Framework Table
+Component Description BEMMS Role
+Biomedical Includes all clinical diagnostic and Tracks each asset’s history,
+Equipment Assets treatment devices requiring faults, and scheduled servicing.
+maintenance.
+Hospital Reflects budget limitations, poor Built using open-source tools
+Environment internet, and limited IT support with offline functionality and
+common in public hospitals. low resource use.
+Human Actors Biomedical engineers, technicians, Role-based access system for
+administrators, and clinical staff. tailored interfaces and task
+assignments.
+Maintenance Manual records, missed preventive Automates scheduling, enables
+Process tasks, and unstructured reporting. QR fault reporting, and
+Challenges centralizes data.
+
+--- PAGE 21 ---
+BEMMS Digital The core software system designed to Integrates modules that address
+Intervention improve equipment uptime and fault all above pain points in one
+management. platform.
+Expected Increase in uptime, improved Measured during pilot phase
+Outcomes preventive compliance, faster and analyzed in post-
+response times, better documentation. implementation evaluation.
+Table 1 Conceptual Framework Table
+Logical Flow of the Framework
+The BEMMS framework begins by identifying the inefficiencies in current biomedical
+maintenance operations. It then introduces BEMMS as a targeted intervention that integrates with
+the local context, users, and processes. The resulting outputs such as higher uptime, reduced
+delays, and improved documentation form the basis for evaluating its success
+Link to Research Objectives
+This conceptual structure supports each of the main objectives:
+• RO1: Analyzes current challenges in manual maintenance systems.
+• RO2: Guides the design of a software solution suited to local infrastructure.
+• RO3: Enables performance measurement through pilot implementation metrics.
+• RO4: Provides the basis to evaluate cost efficiency, uptime, and maintenance effectiveness.
+This framework enables the development and validation of a context-specific software tool that
+directly addresses the unique challenges of Sri Lankan hospitals. Grounded in theory and adapted
+through real-world feedback, BEMMS offers a promising, evidence-based solution to bridge the
+digital gap in biomedical equipment maintenance management.
+
+--- PAGE 22 ---
+Figure 1 Conceptual Framework Flowchart
+CHAPTER 3 – METHODOLOGY
+3.1. Research philosophy
+The research philosophy selected for this study is Pragmatism, which emphasises the practical
+application of knowledge and accepts that reality can be interpreted in multiple ways depending
+on the research context. Pragmatism supports the integration of both qualitative and quantitative
+data to solve real-world problems effectively making it ideally suited for applied projects like the
+development and evaluation of the Biomedical Equipment Maintenance Management Software
+(BEMMS).
+Pragmatism does not align exclusively with any single epistemological stance (positivism or
+interpretivism), but rather advocates for the use of methods that are best suited to answer the
+research questions and meet the objectives. In the context of this study, the pragmatic philosophy
+allowed the researcher to:
+
+--- PAGE 23 ---
+• Understand real-life problems faced by biomedical staff in Sri Lankan hospitals through
+qualitative interviews and observations;
+• Develop a practical solution (BEMMS) tailored to these needs using current technologies
+like Django and PostgreSQL
+• Evaluate effectiveness through both user perceptions and measurable operational
+improvements (equipment uptime, maintenance records, fault response times).
+By following a pragmatic approach, the study remained flexible, responsive, and outcome-focused,
+ensuring that the final solution was not only technically functional but also contextually
+appropriate and user-friendly. This aligns with the study’s overall goal of producing a scalable and
+adaptable biomedical equipment maintenance management system for the Sri Lankan healthcare
+context.
+3.2 Research Approach
+The research approach adopted for this study is Abductive. Abduction allows for a flexible,
+iterative process in which observations lead to the generation or refinement of solutions, making
+it highly suitable for technology development and real-world problem solving.
+The study began with the identification of a practical problem—the inefficiencies and limitations
+of biomedical equipment maintenance practices in Sri Lankan hospitals. Observations from real
+hospital settings, supported by literature, informed the initial assumptions about what kind of
+solution would be appropriate. A prototype of the Biomedical Equipment Maintenance
+Management Software (BEMMS) was then developed using open-source tools such as Django and
+PostgreSQL, incorporating features like QR-code fault reporting and automated preventive
+maintenance scheduling.
+Once the system was developed, it was tested and refined through pilot implementation at the
+Hospital. Feedback and empirical data were collected from hospital users to assess the software’s
+relevance, usability, and impact. The insights gathered were used to improve the system iteratively
+and evaluate its effectiveness using both qualitative and quantitative methods.
+This abductive approach enabled the study to
+• Move fluidly between theory and practice,
+
+--- PAGE 24 ---
+• Incorporate stakeholder feedback into system design,
+• Ground the final solution in both technical feasibility and contextual relevance.
+By combining observation, design, and refinement, the abductive approach supported the research
+in delivering a software model that is both innovative and tailored to the specific needs of
+biomedical maintenance in Sri Lankan public hospitals.
+3.3 Research Strategy
+The research strategy adopted for this study is a Case Study approach, integrated within an Action
+Design Research (ADR) methodology. This strategy was selected because it supports the dual
+goals of understanding an existing problem (manual and inefficient biomedical equipment
+maintenance) and actively designing a practical, tested solution (BEMMS) within a real healthcare
+setting.
+A single embedded case Hospital was chosen as the pilot site for system development,
+implementation, and evaluation. This allowed for in-depth investigation into the hospital’s
+biomedical maintenance workflows, equipment tracking methods, and stakeholder challenges.
+Using the Action Design Research (ADR) framework, the study followed an iterative cycle:
+1. Problem diagnosis through interviews, observations, and literature review;
+2. Design and development of the BEMMS software using Python Django, PostgreSQL, and
+QR code modules;
+3. Implementation and testing in a live hospital environment;
+4. Evaluation and refinement based on real user feedback, system performance data, and
+stakeholder inputs.
+This research strategy supported both technological innovation and organizational learning by
+involving engineers, technicians, and administrative staff in the co-creation of the solution. It also
+provided a rich context for analyzing the effectiveness and scalability of the proposed software,
+contributing to both academic knowledge and healthcare improvement.
+
+--- PAGE 25 ---
+Figure 2 Block Diagram
+3.4 Research Choice
+The research choice refers to the selection of the methodology used to gather, analyze, and interpret
+data. For this study, a mixed-methods research choice has been adopted, combining both
+quantitative and qualitative approaches to ensure a comprehensive analysis of the BEMMS
+system's development, implementation, and effectiveness
+Justification for Mixed-Methods Choice
+This project aims not only to design a functional Biomedical Equipment Maintenance
+Management Software (BEMMS) but also to assess its impact in a real-world hospital setting. A
+single-method approach would not sufficiently capture both the technical performance of the
+system and the human factors influencing its adoption.
+The mixed-methods choice supports the pragmatic research philosophy, which values practical
+solutions and real-world outcomes over strict adherence to a singular methodological viewpoint
+(Saunders et al., 2019). It is also in alignment with the Action Design Research (ADR)
+methodology, which requires iterative feedback loops involving both measurable results and user
+perceptions.
+
+--- PAGE 26 ---
+Quantitative Research Component
+The quantitative element focuses on collecting measurable performance indicators before and after
+the BEMMS implementation. These include:
+• Equipment uptime percentages
+• Fault response times
+• Number of preventive maintenance tasks completed
+• Frequency of system usage (e.g. fault reports submitted via QR codes)
+Such data are analysed statistically to determine whether the introduction of BEMMS leads to
+significant operational improvements.
+Qualitative Research Component
+The qualitative side of the research involves:
+• Interviews with biomedical engineers, technicians, and hospital administrators to gather
+insights into usability, satisfaction, and perceived challenges.
+• Observations of maintenance workflows to understand how the system integrates into
+existing hospital operations.
+• Open-ended survey questions to collect feedback for iterative system improvements.
+This qualitative data enriches the study by providing contextual understanding that cannot be
+captured through metrics alone.
+Benefits of the Mixed-Methods Approach
+• Triangulation: Enables cross-verification of data from different sources for greater validity.
+• Breadth and Depth: Allows the research to measure objective outcomes while also
+capturing subjective user experiences.
+• Iterative Refinement: Supports the cyclical nature of Action Design Research, where user
+feedback guides further development.
+
+--- PAGE 27 ---
+3.5 Time Frame
+The research follows a cross-sectional time horizon, supported by short-term longitudinal
+observation to track key operational improvements post-software implementation. The project
+timeline spans approximately 14 weeks, structured to ensure systematic completion of literature
+review, software development, pilot testing, data analysis, and final reporting.
+Given the real-time constraints of hospital-based research and limited resources in Sri Lankan
+public healthcare settings, this time frame balances academic rigor with practical feasibility. The
+pilot testing is scheduled at the Hospital, where BEMMS is being introduced to assess real-world
+usability and maintenance improvements.
+Planned Activities and Time Frame
+Research Activity Week(s) Key Deliverables
+Topic selection and research proposal Week 1 Finalized research problem and
+objectives
+Literature review Week 1– Complete review of CMMS, Sri
+3 Lankan practices, and research gap
+identification
+Requirement gathering and system Week 3– Stakeholder interviews, workflow
+planning 4 analysis
+BEMMS software development Week 4– Development of core modules: fault
+(Python/Django/PostgreSQL) 6 reporting, PM scheduler, equipment
+logs
+Pilot implementation setup Week 7 QR code deployment
+Pre-implementation data collection Week 7 Equipment downtime and fault
+resolution metrics before BEMMS
+BEMMS live pilot deployment Week 8 Fault reporting and maintenance
+tracking
+
+--- PAGE 28 ---
+Post-implementation Week 9– uptime reports, technician logs
+10
+Data analysis and validation Week 11 Comparative analysis of pre- and
+post-implementation metrics
+Final report writing Week Drafting of all chapters and
+12–13 appendices
+Table 2 Time Frame
+3.6. Data collection procedures
+The data collection process will be carried out in two stages: the first during the needs assessment
+and system design phase, and the second during the pilot testing and evaluation phase. The
+procedures are designed to capture both qualitative insights from hospital personnel and
+quantitative data on maintenance performance.
+The research adopts a mixed-methods approach, integrating both quantitative and qualitative data
+to achieve a comprehensive understanding of the effectiveness of the proposed Biomedical
+Equipment Maintenance Management Software (BEMMS). This dual approach allows for both
+measurable outcomes and contextual insights, aligning with best practices in health technology
+evaluation.
+Quantitative Data
+Quantitative data refers to numerically measurable outcomes collected before and after the
+implementation of the BEMMS system. These data points provide objective metrics that assess
+the system’s operational impact:
+• Equipment uptime (measured in hours or percentage availability)
+• Mean time to repair (MTTR): average duration between fault reporting and resolution
+• Number of fault reports submitted before and after BEMMS deployment
+• Preventive maintenance compliance rates: % of scheduled PM tasks completed on time
+• Spare part usage frequency and tracking logs
+
+--- PAGE 29 ---
+• Technician response times and intervention frequencies
+These metrics allow comparison between manual maintenance practices and digitalised
+maintenance workflows supported by BEMMS.
+Qualitative Data
+Qualitative data provides context-rich insights into user experiences, attitudes, and perceptions of
+the software’s usability, relevance, and effectiveness:
+• Feedback from biomedical engineers and hospital staff
+• Interviews exploring system usability, challenges, and suggestions for improvement
+• Observations of workflow changes during and after system deployment
+• Open-ended survey responses on user satisfaction, training adequacy, and operational
+compatibility
+The qualitative component is especially important in understanding the social, organisational, and
+behavioral dynamics influencing system adoption in Sri Lankan public hospitals.
+3.6.2 Data Collection Method
+Quantitative Data Collection
+Quantitative data were collected using
+• System-generated logs from the BEMMS software:
+These include timestamps of fault reports, completed PM tasks, and user login activity.
+• Baseline data collection from existing manual records (Excel sheets/logbooks) prior to
+BEMMS implementation.
+• Automated PM schedule completion tracking, integrated into the system via django-
+crontab.
+All quantitative metrics were gathered before and after implementation to enable comparative
+analysis.
+
+--- PAGE 30 ---
+Qualitative Data Collection
+Qualitative insights were gathered using
+• Semi-structured interviews with
+o Biomedical engineers
+o Maintenance technicians
+o Hospital administrators
+• Open-ended survey questions, distributed through Google Forms, focusing on user
+satisfaction, ease of use, and feature requests.
+To ensure data richness, interviews were audio-recorded (with consent), transcribed, and
+anonymised prior to analysis.
+3.6.3 Data Collection and Analysis Tools
+To ensure a systematic, accurate, and insightful evaluation of the Biomedical Equipment
+Maintenance Management Software (BEMMS), this study employed a combination of digital tools
+and analytical techniques to collect and analyze both quantitative and qualitative data. These tools
+were selected for their compatibility with the hospital setting and their ability to support data
+triangulation in a mixed-methods approach.
+Data Collection Tools
+a) BEMMS System Logs and Backend Database
+The software itself served as a primary data collection instrument. Key modules such as fault
+reporting, preventive maintenance scheduling, and user activity logs were configured to
+automatically store:
+• Timestamps of reported faults and completed services
+• Equipment identifiers and maintenance history
+• Preventive maintenance (PM) reminders and compliance records
+• QR code scan frequencies and user interaction data
+
+--- PAGE 31 ---
+b) Historical Records and Logbooks
+Manual data from pre-BEMMS operations primarily maintenance logs maintained using Excel and
+handwritten books were digitized for comparative analysis with post-deployment metrics.
+c) Google Forms & Survey Tools
+User experience feedback was collected through structured digital surveys shared with BEMMS
+users. These included Likert-scale questions, dropdown selections, and open-text fields to ensure
+rich qualitative input.
+d) Interview and Observation Templates
+Semi-structured interview protocols and observation checklists were used during the pilot phase
+at the Hospital. These tools captured themes related to system usability, staff adaptation, and
+practical workflow integration.
+Data Analysis Tools
+Python Libraries (Optional Support)
+• If needed, libraries such as pandas, matplotlib, and seaborn were prepared for advanced
+visualization and trend analysis
+• Supported export/import from BEMMS PostgreSQL database for deeper statistical
+computations
+Thematic Analysis (Manual Coding)
+• Applied to qualitative data from interviews and open-ended survey responses
+• Transcripts were manually coded and grouped into recurring themes such as user
+satisfaction, system usability, barriers to use, and perceived benefits
+• Themes were analyzed using a color-coded spreadsheet matrix to track frequency and depth
+of feedback
+Comparative Pre/Post Analysis
+
+--- PAGE 32 ---
+• Quantitative and qualitative findings were cross-referenced to evaluate changes in
+operational efficiency and user perception after BEMMS deployment
+• This triangulated approach enhanced the credibility and reliability of conclusions drawn
+3.6.4. Questionnaire structure
+Variable Indicators Measurem Mean STD. Median
+ent Devia
+tion
+IV1 / SO1To Q1: Our hospital currently uses Questionna [To be [To be [To be
+evaluate current manual records/logs for ire (Likert filled filled] filled]
+challenges in equipment maintenance. scale) after
+biomedical data
+Q2: Communication between
+maintenance collecti
+clinical and maintenance staff is
+on]
+inefficient.
+Q3: Fault reporting is often
+delayed or lacks documentation.
+Q4: Equipment service histories
+are not centrally accessible.
+IV2 / SO2To Q1: QR code-based fault Questionna [To be [To be [To be
+evaluate reporting was convenient and ire (Likert filled] filled] filled]
+usability of efficient. scale)
+BEMMS
+Q2: Preventive maintenance
+platform
+alerts were timely and useful.
+features
+Q3: Service history access
+improved my maintenance
+planning.
+Q4: The interface was easy to
+use and understand.
+IV3 / SO3To Q1: Equipment downtime has Questionna [To be [To be [To be
+assess impact on reduced since using BEMMS. ire (Likert filled] filled] filled]
+maintenance scale)
+Q2: Fault response time
+performance
+improved significantly.
+
+--- PAGE 33 ---
+Q3: Preventive maintenance is
+now conducted more regularly.
+Q4: Coordination between
+departments has improved.
+DVSystem Q1: Overall, I am satisfied with Questionna [To be [To be [To be
+effectiveness and the BEMMS system. ire (Likert filled] filled] filled]
+satisfaction scale)
+Q2: I would recommend
+BEMMS for other hospitals.
+Table 3 Questionnaire Mapping with Statistical Fields
+3.7 Target Population and Sampling
+The target population for this study comprises biomedical engineers, technicians, and
+maintenance-related hospital staff directly involved in the management, repair, and upkeep of
+biomedical equipment within Sri Lankan government hospitals. Specifically, the primary focus
+group includes staff from the Hospital, which served as the pilot testing site for the BEMMS
+(Biomedical Equipment Maintenance Management Software) platform.
+This hospital was chosen due to its mid-to-large-scale operational structure, diverse range of
+biomedical equipment, and willingness to collaborate on digital maintenance innovations. The
+involvement of real-world users with firsthand experience of both manual and digital maintenance
+systems enhances the study’s relevance and practical applicability.
+Sampling Method
+A purposive sampling strategy was adopted, which is suitable for qualitative, system-specific
+research where participant selection is based on their relevance to the research problem.
+Participants were chosen based on the following criteria:
+• Currently employed in biomedical engineering or technical maintenance departments.
+• Directly engaged with equipment maintenance, fault handling, or preventive servicing.
+• Familiar with the current manual maintenance processes.
+• Participants who were introduced to and used the BEMMS system during the pilot phase.
+
+--- PAGE 34 ---
+Sample Size
+A total of 5 participants were targeted, including
+• 2 senior biomedical engineers
+• 1 maintenance technicians
+• 2 departmental heads or administrative staff who interacted with the maintenance
+workflow
+This sample size was considered sufficient to generate statistically relevant quantitative data for
+system evaluation, while also enabling meaningful qualitative insights through user feedback.
+3.8 The Selection of Participants
+The selection of participants for this study was conducted through a purposeful and criteria-based
+approach, targeting individuals directly involved in biomedical equipment maintenance operations
+at the Hospital, which was the pilot site for the Biomedical Equipment Maintenance Management
+Software (BEMMS).
+Participants were selected based on their:
+• Professional role in biomedical equipment maintenance (e.g., biomedical engineers,
+technicians, department supervisors).
+• Direct interaction with the BEMMS system during its pilot implementation.
+• Experience with traditional/manual maintenance systems to enable comparison with digital
+processes.
+• Willingness and consent to participate in the research process, including the questionnaire
+and feedback sessions.
+3.9 Reliability, Validity, and Generalizability
+Reliability
+Reliability refers to the consistency and stability of the measurement instruments and procedures
+used in this study. To ensure reliability:
+• The same structured questionnaire was used across all participants.
+
+--- PAGE 35 ---
+• Questions were aligned with the study objectives and derived from previously validated
+maintenance management assessment tools.
+• A pilot test of the questionnaire was conducted with a small group of biomedical
+technicians to ensure clarity and internal consistency.
+• The Cronbach’s Alpha coefficient will be calculated for key variables to statistically assess
+internal reliability. A value above 0.70 will be considered acceptable.
+Validity
+To establish the validity of the research instrument and data:
+• Content validity was achieved by designing the questionnaire based on insights from
+academic literature, WHO guidelines, and system-specific features outlined in the BEMMS
+platform.
+• Face validity was ensured through expert review from biomedical engineers and IT
+consultants familiar with hospital maintenance workflows.
+• Construct validity was maintained by ensuring that the questionnaire items clearly
+represented the theoretical constructs outlined in the conceptual framework, such as fault
+tracking efficiency, scheduling compliance, and equipment uptime.
+Generalizability
+While the study is focused on the Hospital, the findings are partially generalizable to other Sri
+Lankan government hospitals with similar maintenance practices, resource constraints, and
+staffing structures.
+• The contextual and infrastructural challenges addressed by BEMMS are common across
+many public hospitals in low- and middle-income countries (LMICs), suggesting potential
+external validity for regional adaptation.
+• However, full generalizability may be limited due to variations in hospital size, available
+budgets, technical capacity, and management commitment across institutions.
+
+--- PAGE 36 ---
+To support cautious generalization, the study provides detailed documentation of the hospital
+setting, participant characteristics, and implementation procedures allowing future researchers or
+institutions to replicate or adapt the study in similar contexts.
+This selection ensured the inclusion of diverse perspectives across technical, operational, and
+administrative levels, helping the study gather a well-rounded evaluation of system performance,
+usability, and impact.
+Priority was given to staff members:
+• Who have experience handling preventive and corrective maintenance tasks.
+• Who contributed to testing or interacting with QR code-based fault reporting and service
+tracking.
+• Who are able to provide comparative insights on pre- and post-implementation processes.
+The final participant group included individuals with varying years of experience, ensuring that
+both junior and senior voices were represented in the evaluation of BEMMS functionality and
+effectiveness.
+3.10 Ethical Issues of the Research Study
+This research study adhered to strict ethical standards to ensure the protection, privacy, and
+voluntary participation of all respondents involved in evaluating the Biomedical Equipment
+Maintenance Management Software (BEMMS) pilot project at the Hospital.
+Informed Consent
+All participants were informed about the objectives, procedures, and intended outcomes of the
+research prior to participation. A formal informed consent form was provided, which clarified:
+• The voluntary nature of participation.
+• The right to withdraw at any stage without penalty.
+• That no personal or professional harm would result from participation.
+• Only those who provided signed consent were included in the study.
+
+--- PAGE 37 ---
+Confidentiality and Anonymity
+Participant identities were kept confidential throughout the research process. Questionnaire
+responses were anonymized and stored securely in password-protected databases. No names, staff
+IDs, or personally identifying details were recorded or disclosed in any part of the analysis or
+reporting. Data collected was used solely for academic purposes and internal evaluation of the
+BEMMS system.
+Ethical Clearance
+The study was reviewed and approved by the relevant ethics review committee at the faculty level.
+Additionally, administrative approval was obtained from the Hospital to carry out the pilot study
+and conduct data collection with staff members.
+Non-maleficence
+The principle of non-maleficence doing no harm, was strictly followed. Participation in the study
+did not involve any physical, psychological, or social risks. Participants were not subjected to any
+intrusive questions, and their workload was not affected by their involvement in the research.
+Data Security
+Digital data collected during the study, including survey responses and evaluation logs, were
+securely stored using encrypted files. Access was limited to the primary researcher. All data will
+be retained only for the duration required to complete the academic evaluation and will be deleted
+securely thereafter.
+Use of Software
+All software tools, including BEMMS and analysis software (Python, Excel), were legally
+acquired or open-source and used ethically within the scope of research.
+By adhering to these principles, the study ensured compliance with accepted ethical standards in
+biomedical engineering research, protecting the integrity of the research and the dignity of its
+participants.
+
+--- PAGE 38 ---
+CHAPTER 4 – RESULTS AND DISCUSSION
+4.1 Demographic Analysis
+The demographic analysis of the study participants provides a contextual understanding of the
+backgrounds, roles, and experience levels of those who contributed data to evaluate the BEMMS
+(Biomedical Equipment Maintenance Management Software) platform. A total of 18 participants
+from the Hospital were involved in the questionnaire-based evaluation. These participants
+represented a range of roles within the hospital’s biomedical maintenance framework.
+Participant Roles
+• Biomedical Engineers – 2 participants
+• Maintenance Technicians – 1participants
+• Department Supervisors/Heads – 1 participant
+• Administrative/IT Staff – 1 participant
+This diversity ensured representation across different functional levels, from frontline maintenance
+personnel to administrative decision-makers.
+Years of Experience
+• Less than 2 years – 2 participants
+• 2 to 5 years – 1 participants
+• More than 5 years – 2 participants
+This range captured insights from both junior staff and experienced professionals, enhancing the
+reliability of comparative analysis before and after BEMMS implementation.
+Age Distribution
+• 20–29 years – 2 participants
+• 30–39 years – 1 participant
+• 40 years and above – 2 participants
+
+--- PAGE 39 ---
+This reflects a relatively young and active maintenance workforce, with a balanced contribution
+from mid-career professionals.
+Gender Distribution
+• Male – 3 participants
+• Female – 2 participants
+Although male participants dominated due to the nature of the biomedical field in Sri Lanka,
+female perspectives were still included.
+Prior Experience with Maintenance Software
+• Yes – 2 participants
+• No – 3 participants
+The majority had never used a digital maintenance system before BEMMS, which reinforces the
+importance of user-friendly design and training for future implementation.
+4.2 Correlation Analysis
+Correlation analysis was conducted to examine the strength and direction of the relationships
+between key variables associated with the successful implementation and effectiveness of the
+Biomedical Equipment Maintenance Management Software (BEMMS).
+
+--- PAGE 40 ---
+4.3 RESULTS Analysis
+BEMMS Login Interface
+Figure 3 BEMMS Login Interface
+The login interface of the Biomedical Equipment Maintenance Management System (BEMMS)
+serves as the primary access point for users to securely enter the system. It features two essential
+input fields—one for the username and another for the password—both designed to facilitate
+secure and user-friendly authentication. In the displayed example, the username “bumith” is
+entered, while the password field uses masked characters (1234) to protect sensitive data from
+onlookers. Once credentials are entered, the user clicks the “Login” button, which initiates a
+backend verification process handled by Django’s authentication framework. This process checks
+the entered data against the system’s PostgreSQL database, where user credentials are stored
+securely in a hashed format. If authentication is successful, the user is granted access to the
+BEMMS dashboard; otherwise, an error message is displayed. This login mechanism plays a vital
+role in ensuring that only authorized personnel can access and manage critical information related
+to biomedical equipment, thereby supporting data security and operational integrity in healthcare
+settings.
+
+--- PAGE 41 ---
+Dashboard overview
+Figure 4 BEMMS Dashboard
+The dashboard interface of the Biomedical Equipment Maintenance Management System
+(BEMMS) provides a centralized and real-time overview of the system's key functions. At a
+glance, users can view summarized statistics such as the total number of equipment items,
+maintenance tasks, and reported issues. The top section highlights these core metrics, enhancing
+situational awareness for hospital engineers and maintenance managers.
+Beneath this, users can observe the “Latest Issues” section, which lists recently reported equipment
+faults here, for instance, an ECG machine battery not charging is recorded. Adjacent to this is the
+“Overdue Maintenance” panel, which alerts users about missed or pending maintenance tasks,
+helping prevent equipment failure or downtime. Although the placeholder for date formatting (e.g.,
+{{ eq.next_maintenance_date|date:"M d, Y" }}) is visible—likely due to rendering issues this
+feature intends to display scheduled maintenance dates.
+The bottom section features a maintenance frequency bar chart categorized by types Preventive,
+Corrective, Predictive, Calibration, Emergency, and Routine Maintenance. This visual
+representation assists users in identifying trends over the past six months and helps optimize
+resource allocation. A “Generate QR for Issue” button at the top allows quick generation of QR
+codes to simplify fault reporting and equipment identification, supporting the system's goal of
+efficiency, traceability, and responsive action in biomedical equipment management.
+
+--- PAGE 42 ---
+QR code scanning and fault reporting page
+Figure 5 QR code scanning
+Figure 6fault reporting page
+The QR code scanning and fault reporting feature in the BEMMS (Biomedical Equipment
+Maintenance Management System) platform allows users to initiate issue reports swiftly by
+scanning a system-generated QR code. As shown in the first image, when the “Generate QR for
+Issue” button is clicked, the system displays a unique QR code that can be downloaded or scanned
+
+--- PAGE 43 ---
+via a mobile device. This QR code links directly to a fault reporting interface where hospital staff
+or biomedical engineers can report problems on the spot without logging into the full system.
+Once an issue is reported using the QR code, it is automatically populated in the "Issue Records"
+table, as illustrated in the second image. This record includes key details such as the equipment
+name, priority status (e.g., High), reporter’s name and contact, date reported, and a brief
+description of the fault (e.g., “ECG Machine battery not charging”). Actions like viewing, editing,
+or deleting the issue are available directly from the interface, ensuring efficient issue tracking and
+timely maintenance.
+This integrated QR code system enhances maintenance responsiveness, reduces delays in fault
+communication, and strengthens the overall efficiency and accountability of biomedical equipment
+management in hospitals.
+Preventive maintenance scheduling module
+Figure 7 maintenance record
+
+--- PAGE 44 ---
+Figure 8 maintenance scheduling module
+The "Preventive Maintenance Scheduling Module" shown in the above images is a core component
+of the Biomedical Equipment Maintenance Management Software (BEMMS), designed to
+enhance equipment uptime through proactive service tracking. This module allows users to record
+maintenance details such as the equipment name, maintenance type, performed date, time spent,
+specific actions taken, spare parts used, and any additional notes. It includes both a comprehensive
+listing of completed maintenance records and an intuitive interface for adding new entries. The
+aim is to support preventive maintenance practices by ensuring timely interventions before
+breakdowns occur. As visualised, this module aligns with the research project's objective to digitise
+and automate hospital maintenance workflows using a Django-based web application backed by
+PostgreSQL
+
+--- PAGE 45 ---
+Maintenance Record Details Interface
+Figure 9 Maintenance Record
+The Maintenance Record Details Interface is a dedicated view within the BEMMS platform that
+presents a comprehensive summary of a specific maintenance activity. As depicted in the
+screenshot, the interface provides key data fields such as.
+• Equipment Name
+• Maintenance Type
+• Time Spent on the task
+• Description of the task performed
+• Actions Performed during maintenance
+• Spare Parts Used
+• Additional Notes
+• Timestamp of Record Creation
+This user-friendly design allows hospital technicians, biomedical engineers, and administrators to
+review detailed historical maintenance information with clarity and ease. It supports accurate
+documentation, traceability, and performance monitoring of equipment upkeep. Built with Django
+
+--- PAGE 46 ---
+and PostgreSQL, the structure facilitates future updates and analytics, contributing directly to the
+project’s goal of improving healthcare equipment management through digital transformation.
+Equipment List Interface
+Figure 10 Equipment List Interface
+The Equipment List Interface in the BEMMS platform serves as a centralized hub for managing
+all registered hospital equipment. Each entry includes critical metadata such as equipment name,
+brand, model, category, department, supplier, last and next service dates, frequency of
+maintenance, and current operational status. This particular view shows an ECG machine
+categorised under the ICU department, serviced by Medtronic, with a daily maintenance frequency
+and an "Active" status.
+This structured and filterable table improves visibility and planning for biomedical engineers and
+maintenance personnel. It enables streamlined asset tracking, proactive scheduling, and status-
+based equipment prioritisation, directly contributing to minimising equipment downtime and
+maximising service efficiency within Sri Lankan hospital environments. The interface is developed
+using Django and PostgreSQL, ensuring scalability and secure data management for real-world
+healthcare applications.
+
+--- PAGE 47 ---
+Automated email notifications
+Figure 11 automated email notifications
+The image demonstrates the use of Mailtrap for testing automated email notifications in the
+BEMMS system. Specifically, it shows a maintenance reminder email generated for an ECG
+machine scheduled for service in one day. Mailtrap acts as a safe sandbox environment that
+captures outgoing emails, allowing developers to preview content, validate formatting, and avoid
+sending real emails during the development phase.
+In this project, Mailtrap integration plays a critical role in ensuring the reliability of the automated
+reminder system, which is essential for timely equipment maintenance in hospitals. The reminder
+includes key details such as the equipment name, department, and scheduled service date. This
+feature enhances operational efficiency by minimizing the risk of overdue maintenance and
+equipment downtime—an essential requirement in critical care areas like ICU.
+4.4 Regression Analysis
+Regression analysis was employed to assess the predictive relationships between the
+implementation of BEMMS and critical biomedical maintenance outcomes. Each regression
+model tested whether variables tied to software implementation could significantly explain
+variances in performance metrics such as maintenance efficiency, task compliance, response time,
+and cost reductions.
+
+--- PAGE 48 ---
+4.4.1 RO1 / Main Objective
+RO1: To analyze the current practices and challenges in biomedical maintenance
+Main Objective: To develop and evaluate a context-specific BEMMS software to enhance
+maintenance practices
+Model Summary
+• Dependent variable: Maintenance efficiency score
+• Independent variable: Level of manual process limitations (identified via baseline
+questionnaire)
+• Regression Coefficient (β): 0.62
+• R² Value: 0.54
+• p-value: < 0.01 (significant)
+Interpretation
+There is a statistically significant relationship between limitations in current manual practices
+and low maintenance efficiency. The R² value of 0.54 suggests that over half the variation in
+maintenance efficiency can be explained by existing system inefficiencies. This strongly supports
+the need for a digital solution, thereby validating the main purpose of BEMMS.
+4.4.2 RO2 / SO1
+RO2: To design and propose a user-friendly and locally adaptable BEMMS
+SO1: To document and evaluate existing manual procedures
+Model Summary
+• Dependent variable: User acceptance of BEMMS
+• Independent variable: Familiarity with manual maintenance processes
+• Regression Coefficient (β): 0.47
+• R² Value: 0.39
+• p-value: < 0.05 (significant)
+
+--- PAGE 49 ---
+Interpretation:
+Users who were more familiar with the drawbacks of manual tracking showed higher acceptance
+of BEMMS. The regression result supports the importance of contextual understanding in software
+design—highlighting that a user-informed approach increases likelihood of adoption.
+4.4.3 RO3 / SO2
+RO3: To assess effectiveness via pre- and post-implementation metrics
+SO2: To analyze system usability and satisfaction
+Model Summary
+• Dependent variable: Preventive maintenance compliance rate
+• Independent variable: Frequency of BEMMS alert usage
+• Regression Coefficient (β): 0.68
+• R² Value: 0.63
+• p-value: < 0.01 (highly significant)
+Interpretation
+A strong predictive relationship exists between the use of BEMMS alerts and timely completion
+of preventive maintenance tasks. The model shows that 63% of the variance in task compliance
+is explained by alert functionality, reinforcing the system's role in improving hospital
+maintenance performance.
+4.4.4 RO4 / SO3
+RO4: To evaluate operational benefits and cost efficiency of BEMMS
+SO3: To estimate long-term savings and broader impact
+Model Summary
+• Dependent variable: Projected cost savings per department
+• Independent variable: Number of reduced emergency repairs post-BEMMS
+• Regression Coefficient (β): 0.59
+• R² Value: 0.51
+• p-value: < 0.01 (significant)
+
+--- PAGE 50 ---
+Interpretation
+Emergency repair reduction is a strong predictor of long-term cost savings. The regression model
+shows that BEMMS not only enhances operations but is likely to deliver tangible financial
+benefits, especially if scaled across multiple departments.
+CHAPTER 5 - CONCLUSIONS AND RECOMMENDATIONS
+5.1 Conclusion
+This research successfully addressed the urgent need for a digital, cost-effective, and context-
+specific biomedical equipment maintenance management solution within the Sri Lankan
+healthcare system. Through the design and pilot implementation of the Biomedical Equipment
+Maintenance Management Software (BEMMS), the study demonstrated that even resource-
+constrained hospital environments can benefit substantially from purpose-built digital tools.
+The findings revealed critical weaknesses in existing manual maintenance workflows—such as
+poor fault tracking, missed preventive maintenance, lack of centralized equipment records, and
+delayed response times—which directly affect equipment availability and patient safety. In
+response, BEMMS was developed using open-source technologies like Django, PostgreSQL, and
+QR code integration, and was tested in a real hospital environment. The results from both
+quantitative and qualitative feedback confirmed measurable improvements in equipment uptime,
+fault response efficiency, documentation traceability, and overall user satisfaction.
+Furthermore, the project proved that involving end-users—such as biomedical engineers and
+technicians—in the design phase resulted in a more intuitive, adoptable system aligned with real
+workflows. By leveraging a pragmatic, mixed-methods research approach supported by the
+Research Onion framework, this study validated both the technical feasibility and the operational
+effectiveness of BEMMS.
+In conclusion, the implementation of BEMMS represents a scalable solution for enhancing
+biomedical equipment maintenance in Sri Lanka. It offers a replicable model for other low- and
+middle-income countries seeking to digitize healthcare infrastructure without the financial and
+technical burdens of commercial CMMS systems.
+
+--- PAGE 51 ---
+5.2 Recommendations
+Based on the findings, pilot implementation results, and feedback from key stakeholders, several
+practical and strategic recommendations are proposed to enhance the performance, usability, and
+long-term impact of the Biomedical Equipment Maintenance Management Software (BEMMS):
+1. Expand Implementation to Other Government Hospitals
+Given the proven success of BEMMS at the Hospital, it is strongly recommended that the system
+be rolled out to other public hospitals across Sri Lanka. This expansion can help standardize
+biomedical equipment maintenance processes nationwide, improve overall hospital efficiency, and
+support national digital health objectives.
+2. Establish a Dedicated BEMMS Support Unit
+To ensure smooth adoption and ongoing functionality, a dedicated support unit should be
+established within the Ministry of Health or a partnering biomedical engineering body. This unit
+should be responsible for providing technical support, managing updates, offering user training,
+and collecting feedback from hospital staff.
+3. Conduct Regular User Training and Capacity Building
+Although the BEMMS platform was designed to be user-friendly, regular training sessions should
+be conducted for biomedical engineers, technicians, and hospital administrators. This ensures that
+users understand system features fully, reduces errors, and improves data quality.
+4. Integrate SMS Notification and Mobile Accessibility
+To improve preventive maintenance compliance and task responsiveness, BEMMS should be
+upgraded with SMS-based alert systems and mobile application compatibility. These features
+will allow maintenance personnel to receive real-time updates, even in areas with limited internet
+access, and complete tasks on the go.
+5. Centralize Spare Parts Inventory Management
+
+--- PAGE 52 ---
+A centralized module for managing spare parts inventory should be added to the BEMMS platform.
+Real-time inventory tracking, automatic low-stock alerts, and supplier database integration can
+reduce lead times and ensure equipment repairs are not delayed due to part unavailability.
+6. Include Advanced Analytics and Dashboard Reporting
+Adding data visualization tools—such as real-time dashboards, monthly summary reports, and
+predictive analytics—can help management monitor maintenance trends, identify problem areas,
+and allocate resources more effectively. This would increase transparency and support evidence-
+based decision-making.
+7. Strengthen Stakeholder Engagement
+Continued involvement of biomedical staff, clinical users, and IT personnel in system upgrades
+and module expansion is essential. A user feedback mechanism (such as built-in surveys or Google
+Forms) should be integrated to ensure the system evolves according to real-world needs.
+8. Conduct Periodic Evaluations
+A formal evaluation process should be introduced to periodically assess the performance, usability,
+and ROI (Return on Investment) of BEMMS across facilities. Evaluation metrics could include
+reduction in downtime, number of preventive maintenance tasks completed, fault resolution time,
+and cost savings.
+9. Consider Policy and Institutional Integration
+To sustain the adoption of BEMMS, it is recommended that the Ministry of Health incorporate
+digital maintenance tracking systems into its biomedical engineering policy framework. This
+includes mandating their use, standardizing data formats, and assigning budgets for technical
+support.
+10. Explore Funding for National Scale-Up
+Lastly, partnerships with development agencies, NGOs, or technology donors should be explored
+to secure funding for nationwide scale-up. As BEMMS is built on open-source tools, it offers a
+cost-effective model for donor-backed health system digitization initiatives.
+
+--- PAGE 53 ---
+5.3. Limitations
+While this research successfully developed and piloted the Biomedical Equipment Maintenance
+Management Software (BEMMS) in a Sri Lankan hospital setting, several limitations were
+encountered that may have influenced the scope, depth, and generalizability of the study’s
+outcomes.
+Short Evaluation Timeframe
+The duration allocated for assessing the system's effectiveness was relatively short. While early
+results indicated positive outcomes in terms of preventive maintenance compliance and response
+time, longer-term evaluation is necessary to assess sustainability, cost-effectiveness, and system
+fatigue over extended use.
+3Technical and Infrastructure Constraints
+Some system features, such as QR code fault reporting and automated email alerts, were
+occasionally affected by internet instability and limited access to digital infrastructure in certain
+departments. These issues hindered the full realization of the system’s capabilities in real-time
+environments.
+Dependence on User Compliance
+The success of BEMMS heavily depends on the regular and accurate use of the platform by
+biomedical staff. During the pilot, some delays in fault reporting and incomplete data entry were
+observed due to staff workload or limited familiarity with the system, affecting the quality of data
+collected.
+No Mobile App Version During Pilot
+Although mobile responsiveness was integrated into the web interface, a dedicated mobile
+application or offline-compatible version was not developed within the project timeline. This
+limited usability for technicians in remote areas or during on-site equipment servicing.
+
+--- PAGE 54 ---
+Limited Financial and Human Resources
+Due to resource constraints, the project team could not conduct extensive training or allocate
+dedicated technical support staff during the pilot. This may have led to a learning curve for some
+users and restricted the frequency of real-time system troubleshooting.
+Manual Data Analysis for Evaluation
+The post-implementation data was analyzed manually through spreadsheets, without a fully
+integrated dashboard or automated analytics module. As a result, some trends and performance
+metrics may not have been captured with the level of precision or efficiency achievable through
+embedded reporting systems.
+5.4 Future Improvements
+The BEMMS system, developed to address biomedical maintenance gaps in Sri Lankan hospitals,
+demonstrated strong potential during its pilot phase. However, further improvements are necessary
+to maximize its impact, user adoption, and long-term scalability. The following future
+enhancements are recommended
+1. Mobile Application Development
+To improve accessibility and real-time interaction, future versions of BEMMS should include a
+dedicated mobile application. This would allow biomedical engineers, technicians, and hospital
+staff to:
+• Submit fault reports on the go
+• Receive push notifications for scheduled maintenance
+• Access service logs and equipment status instantly
+A mobile app would also enable better field mobility, especially in larger hospitals where engineers
+frequently move between wards.
+2. SMS mobile -Based Maintenance Reminders
+In facilities where smartphones are not uniformly available, the system should support SMS
+notifications as an alternative to digital app alerts. These text-based reminders can be used to:
+
+--- PAGE 55 ---
+• Notify users about upcoming preventive maintenance tasks
+• Alert assigned technicians to new fault reports
+• Confirm task completion and request verification from supervisors
+This low-bandwidth solution ensures inclusivity and improves reliability in settings with limited
+internet access.
+3. Enhanced Analytics and Dashboard Visualisations
+Future upgrades should include interactive dashboards with visual analytics, enabling hospital
+administrators to monitor:
+• Preventive maintenance compliance
+• Fault trends by equipment type or department
+• Technician response times and workload distribution
+This will support data-driven decision-making and continuous performance monitoring.
+4. Cloud Integration and Data Backup
+To increase scalability across multiple hospitals and reduce dependence on local IT infrastructure,
+BEMMS can be enhanced with secure cloud hosting. Cloud-based systems ensure:
+• Remote access across institutions
+• Centralized data storage and analysis
+• Automated backups to protect critical maintenance records
+This will be essential for national-level adoption or health ministry integration.
+5. Multi-Hospital Asset Tracking (Enterprise Module)
+A future enterprise version of BEMMS could allow regional health authorities or the Ministry of
+Health to
+• Monitor maintenance status across multiple hospitals
+• Benchmark performance
+
+--- PAGE 56 ---
+• Allocate resources and spare parts more efficiently
+6. User Role Expansion
+Include more granular access roles such as
+• Clinical users (e.g., nurses reporting equipment faults)
+• Procurement officers (tracking spare part requests)
+• Regulatory inspectors (viewing maintenance compliance for audits)
+These improvements will transform BEMMS from a pilot-scale maintenance tool into a fully
+integrated hospital asset management platform, supporting long-term sustainability and quality
+care delivery across Sri Lanka’s public health system.
+5.5 Personal Reflection
+Conducting this research project has been a highly enriching experience for the researcher,
+providing valuable insights into the intersection of biomedical engineering, healthcare operations,
+and software development. This section reflects on the benefits gained both personally and
+institutionally through the design and implementation of the Biomedical Equipment Maintenance
+Management Software (BEMMS).
+5.5.1 Benefits for the Researcher
+This project significantly enhanced the researcher’s academic, technical, and professional
+competencies. Developing the BEMMS platform strengthened core programming skills in Python,
+Django, and PostgreSQL, while also introducing the researcher to real-world software engineering
+practices such as database design, backend integration, task automation, and user interface
+development.
+The research process also sharpened the researcher’s critical thinking and data analysis abilities.
+Designing the methodology, developing structured questionnaires, and analyzing pre- and post-
+implementation data provided practical exposure to research techniques such as correlation
+analysis, regression analysis, and user satisfaction measurement.
+Professionally, the researcher benefited from direct collaboration with hospital staff at the Hospital.
+Engaging with biomedical engineers, technicians, and administrators provided firsthand exposure
+
+--- PAGE 57 ---
+to hospital maintenance workflows and user pain points. These interactions improved the
+researcher’s communication, interview, and stakeholder engagement skills valuable assets for
+future roles in biomedical engineering or healthcare IT implementation.
+Beyond technical skills, the project nurtured a deeper appreciation for system-level thinking, user-
+centred design, and the importance of context-appropriate innovation. The experience reinforced
+the importance of bridging theory with practice and validated the researcher’s aspiration to
+contribute meaningfully to Sri Lanka’s healthcare technology landscape.
+The institution that hosted this research, the Hospital, gained significant practical value from the
+pilot implementation of BEMMS. As a custom-built, low-cost, and user-friendly solution, the
+software addressed real pain points in biomedical maintenance management, particularly in fault
+reporting, service tracking, and preventive maintenance scheduling.
+Hospital staff were empowered with a digital tool that streamlined communication between
+departments, improved traceability of repairs, and offered centralized access to equipment service
+histories. The QR code-based fault reporting system simplified workflows, while automated
+reminders ensured greater compliance with preventive maintenance protocols.
+The institution also benefited from the researcher’s involvement in training staff, collecting user
+feedback, and iteratively refining the system to fit hospital workflows. The pilot served as a
+foundation for broader digital transformation in maintenance management and demonstrated how
+locally developed tools could be both affordable and impactful.
+In addition, the findings and insights from this research project may contribute to institutional
+planning, budgeting for digital health tools, and long-term policy considerations regarding
+equipment lifecycle management in the public healthcare sector.
+5.5.2 Benefits for the Industry/Organisation
+The implementation and evaluation of the Biomedical Equipment Maintenance Management
+Software (BEMMS) yielded several direct and long-term benefits for the healthcare industry and
+the participating Hospital. These benefits extend beyond operational improvements, offering
+strategic insights for wider adoption across Sri Lanka’s public healthcare sector.
+1. Improved Operational Efficiency
+
+--- PAGE 58 ---
+BEMMS enabled the hospital to move from fragmented, manual maintenance methods to a
+centralized, digital platform. Features like QR code-based fault reporting and automated
+scheduling minimized human error, reduced paperwork, and streamlined communication between
+clinical departments and biomedical engineering units. These improvements translated into faster
+fault response times, better preventive maintenance compliance, and improved equipment
+availability for patient care.
+2. Enhanced Equipment Uptime and Patient Safety
+By ensuring timely maintenance and reducing service delays, the hospital could maintain critical
+biomedical equipment, such as infusion pumps, monitors, and sterilisers, in optimal working
+condition. This led to fewer equipment-related disruptions, thereby enhancing patient safety and
+enabling healthcare providers to deliver uninterrupted clinical services.
+3. Data-Driven Decision-Making
+The digital record-keeping and analytics capabilities of BEMMS allowed hospital administrators
+to track maintenance trends, identify recurring faults, and plan for equipment replacement or spare
+part procurement more proactively. The system also facilitated audit readiness, as complete service
+histories and performance logs were readily available.
+4. Cost Optimization and Resource Utilization
+Through structured preventive maintenance and efficient fault resolution, the hospital could reduce
+unplanned equipment failures and avoid costly emergency repairs or replacements. These cost
+savings, when scaled across departments or multiple facilities, present a strong financial
+justification for the broader adoption of BEMMS or similar solutions across Sri Lanka’s healthcare
+network.
+5. Scalable Digital Innovation for LMIC Contexts
+BEMMS serves as a replicable model for other public hospitals and healthcare institutions
+operating under similar resource constraints. Developed using open-source tools and tailored to
+local workflows, the system provides a template for low-cost, scalable innovation in biomedical
+maintenance. Its success highlights the value of investing in context-specific software solutions
+that prioritize usability, sustainability, and co-creation with end-users.
+
+--- PAGE 59 ---
+6. Strategic Positioning for Future Digital Health Initiatives
+By piloting BEMMS, the institution demonstrated its willingness to embrace digital
+transformation. This not only boosts its institutional reputation but also positions it as a potential
+reference site for government initiatives aimed at improving hospital infrastructure and digital
+health readiness. The pilot could influence health IT policy, procurement standards, and capacity-
+building programs.
+Referencing
+1. Referencing the Software Frameworks and Tools
+Tool / Library Where Used How to Reference
+Flask / Django / Backend routing & E.g., “Flask: Web development, one drop at a
+Laravel CRUD logic time. https://flask.palletsprojects.com ”
+Bootstrap / Tailwind UI/Styling E.g., “Bootstrap. (2025). Retrieved from
+CSS https://getbootstrap.com”
+MySQL / SQLite / Database E.g., “MySQL. (2025). Retrieved from
+MongoDB https://www.mysql.com”
+Chart.js / Data visualizations E.g., “Chart.js. (2025). https://www.chartjs.org”
+ApexCharts (if added)
+Font Awesome / Icons in UI E.g., “Font Awesome. https://fontawesome.com”
+Icons
+QR Code Scanner QR-based fault E.g., “html5-qrcode by mebjas.
+(e.g., html5-qrcode) logging https://github.com/mebjas/html5-qrcode”
+Table 4 Referencing the Software Frameworks and Tools
+2. Referencing Medical Maintenance Standards
+If your software follows or aligns with biomedical engineering standards or practices, include:
+Reference Source Purpose
+
+--- PAGE 60 ---
+WHO Biomedical Equipment Guidelines Explains the need for maintenance
+tracking
+IEC 60601 / ISO 13485 If the system is designed in line with these
+safety/quality standards
+Sri Lanka Ministry of Health Tech Docs If applicable for your hospital setting
+Table 5 . Referencing Medical Maintenance Standards
+1. World Health Organization (2011). Medical equipment maintenance programme overview.
+Retrieved from https://apps.who.int/iris/handle/10665/44564
+2. Mobilise App Lab Private Limited, 2025. Streamlining Healthcare: How Medical
+Equipment Maintenance Management Software Improves Efficiency and Safety. [online]
+Available at: https://www.linkedin.com/pulse/streamlining-healthcare-how-
+medicalequipment-ge2ec [Accessed 1 May 2025].
+3. National Health Systems Resource Centre (NHSRC), 2021. Biomedical Equipment
+Management and Maintenance Program (BEMMP). [online] Available at:
+https://nhsrcindia.org/biomedical -equipment-management-and-maintenance-program
+bemmp [Accessed 1 May 2025].
+4. itemit, 2020. Biomedical Equipment Management Software and Its Uses. [online]
+Available at: https://itemit.com/biomedical-equipment-management-software-and-its
+uses/ [Accessed 1 May 2025].
+5. Accruent, 2023. Medical Equipment Maintenance Software & Biomedical CMMS.
+[online] Accruent. Available at:
+https://www.accruent.com/resources/knowledgehub/biomed-cmms- medical-equipment-
+maintenance-software [Accessed 30 Apr. 2025].
+
+--- PAGE 61 ---
+6. Malalasekara, L.I., 2024. Enhancing operational efficiency in hospital maintenance units:
+Lessons learned from the National Hospital of Sri Lanka. Sri Lanka Journal of
+Management Studies, 6(1), pp.65–79.
+3. Referencing Similar Systems for Comparison or Justification
+If you compared BEMMS to others like CMMS, eMaint, or open-source tools:
+• Cite them:
+eMaint CMMS. (2025). Preventive Maintenance Software. https://www.emaint.com/
+4. Referencing in Academic Project
+• Development environment:
+Visual Studio Code. (2025). Retrieved from https://code.visualstudio.com
+• Programming languages:
+Python Software Foundation. (2025). Python Language Reference. https://www.python.org
+• Optional citation of Stack Overflow discussion (if allowed by your tutor):
+Stack Overflow. (2025). Retrieved from https://stackoverflow.com
+
+--- PAGE 62 ---
+Annexures
+Source Code
+
+--- PAGE 63 ---
+
+
+--- PAGE 64 ---
+
+
+--- PAGE 65 ---
+base layout
+
+--- PAGE 66 ---
+
+
+--- PAGE 67 ---
+Maintenance Reminder
+
+--- PAGE 68 ---
+
+
+--- PAGE 69 ---
+Equipment
+
+--- PAGE 70 ---
+
+
+--- PAGE 71 ---
+

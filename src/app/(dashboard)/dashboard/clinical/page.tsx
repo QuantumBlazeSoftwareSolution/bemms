@@ -1,26 +1,47 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { AlertCircle, Clock, QrCode, TriangleAlert } from "lucide-react"
-import { submittedFaults } from "@/lib/data"
-import Link from "next/link"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { AlertCircle, Clock, QrCode, TriangleAlert } from "lucide-react";
+import { getAllFaults } from "@/lib/db/crud/faults/read";
+import { getAssetById } from "@/lib/db/crud/assets/read";
+import Link from "next/link";
 
-export default function ClinicalDashboard() {
+export default async function ClinicalDashboard() {
+  const dbFaults = await getAllFaults();
+
+  // Dynamically resolve equipment names from their DB rows
+  const resolvedFaults = await Promise.all(
+    dbFaults.map(async (fault) => {
+      const asset = await getAssetById(fault.assetId);
+      return {
+        ...fault,
+        assetName: asset ? asset.name : "Unknown Machine",
+      };
+    })
+  );
+
   const getStatusBadge = (status: string) => {
     switch (status) {
-      case "RESOLVED": return <Badge className="bg-emerald-500 text-xs">Resolved</Badge>
-      case "IN_PROGRESS": return <Badge className="bg-blue-500 text-xs">In Progress</Badge>
-      default: return <Badge variant="outline" className="text-xs text-amber-600 border-amber-300">Open</Badge>
+      case "RESOLVED":
+        return <Badge className="bg-emerald-500 text-xs">Resolved</Badge>;
+      case "IN_PROGRESS":
+        return <Badge className="bg-blue-500 text-xs">In Progress</Badge>;
+      default:
+        return <Badge variant="outline" className="text-xs text-amber-600 border-amber-300">Open</Badge>;
     }
-  }
+  };
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case "CRITICAL": return "border-l-4 border-l-red-500"
-      case "HIGH": return "border-l-4 border-l-orange-400"
-      case "MEDIUM": return "border-l-4 border-l-amber-400"
-      default: return "border-l-4 border-l-slate-300"
+      case "CRITICAL":
+        return "border-l-4 border-l-red-500";
+      case "HIGH":
+        return "border-l-4 border-l-orange-400";
+      case "MEDIUM":
+        return "border-l-4 border-l-amber-400";
+      default:
+        return "border-l-4 border-l-slate-300";
     }
-  }
+  };
 
   return (
     <div className="flex flex-col gap-6 w-full max-w-2xl mx-auto">
@@ -68,18 +89,32 @@ export default function ClinicalDashboard() {
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
-            {submittedFaults.map((fault) => (
-              <div key={fault.id} className={`p-4 rounded-lg bg-white border border-slate-100 ${getPriorityColor(fault.priority)}`}>
+            {resolvedFaults.length === 0 && (
+              <p className="text-center text-muted-foreground py-8">No faults reported. Everything is operational! 🏥</p>
+            )}
+            {resolvedFaults.map((fault) => (
+              <div
+                key={fault.id}
+                className={`p-4 rounded-lg bg-white border border-slate-100 ${getPriorityColor(fault.priority)}`}
+              >
                 <div className="flex items-start justify-between gap-2">
                   <div>
                     <div className="font-medium text-slate-900">{fault.assetName}</div>
-                    <div className="text-xs text-slate-500 mt-0.5">{fault.department} · {fault.category} · {fault.id}</div>
+                    <div className="text-xs text-slate-500 mt-0.5">
+                      {fault.department} · {fault.category} · {fault.id}
+                    </div>
                     <p className="text-sm text-slate-600 mt-2 line-clamp-2">{fault.description}</p>
+                    {fault.imageUrl && (
+                      <div className="mt-2 text-xs text-primary font-medium">
+                        🖼️ Image attached
+                      </div>
+                    )}
                   </div>
                   <div className="flex flex-col items-end gap-2 shrink-0">
                     {getStatusBadge(fault.status)}
                     <span className="text-xs text-slate-400 flex items-center gap-1">
-                      <Clock className="w-3 h-3" />{fault.submittedAt}
+                      <Clock className="w-3 h-3" />
+                      {fault.submittedAt}
                     </span>
                   </div>
                 </div>
@@ -89,5 +124,5 @@ export default function ClinicalDashboard() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

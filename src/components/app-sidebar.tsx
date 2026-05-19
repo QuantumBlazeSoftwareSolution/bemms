@@ -1,6 +1,7 @@
 "use client"
 
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
+import { signOutAction } from "@/lib/actions/auth"
 import {
   Sidebar,
   SidebarContent,
@@ -80,6 +81,13 @@ const roleBadgeColor = {
 export function AppSidebar() {
   const pathname = usePathname()
   const role = useRole(pathname)
+  const router = useRouter()
+
+  const handleLogout = async () => {
+    await signOutAction();
+    router.push("/login");
+    router.refresh();
+  }
 
   const navItems =
     role === "technician" ? technicianNav :
@@ -184,10 +192,13 @@ export function AppSidebar() {
           <Settings className="w-5 h-5" />
           <span className="text-sm font-medium">Settings</span>
         </div>
-        <Link href="/login" className="flex items-center gap-2 mt-3 text-destructive/70 hover:text-destructive transition-colors">
+        <button
+          onClick={handleLogout}
+          className="flex w-full items-center gap-2 mt-3 text-destructive/70 hover:text-destructive transition-colors cursor-pointer text-left bg-transparent border-0 p-0"
+        >
           <LogOut className="w-5 h-5" />
           <span className="text-sm font-medium">Logout</span>
-        </Link>
+        </button>
       </SidebarFooter>
     </Sidebar>
   )

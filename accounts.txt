@@ -1,0 +1,24 @@
+Security Accounts:
+
+Admin/Manager: 
+- admin@hospital.lk
+- Password: admin123
+
+Technician Silva: 
+- silva@hospital.lk
+- Password: tech123 
+- specialty: Radiology
+
+Technician Fernando: 
+- fernando@hospital.lk 
+- Password: tech123 
+- specialty: Life Support
+
+Technician Kumara: 
+- kumara@hospital.lk 
+- Password: tech123 
+- specialty: General Monitoring
+
+Clinical User: 
+- clinical@hospital.lk 
+- Password: clinical123

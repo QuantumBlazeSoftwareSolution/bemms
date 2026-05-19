@@ -1,0 +1,193 @@
+--- PAGE 1 ---
+-Project Proposal-
+Development of an Enhanced BEMMS
+for Sri Lankan Hospitals
+Student Name Bumith Charuka Nallaperuma
+Registration No E217844
+Supervisor Mr. Angelo Perera
+Second Supervisor -
+Date Submitted 26.03.2026
+Date Approved -
+1 | Page
+
+--- PAGE 2 ---
+Contents
+Introduction ............................................................................................................................. 3
+Background and Motivation .................................................................................................. 3
+Problem in Brief ...................................................................................................................... 4
+Aim ........................................................................................................................................... 4
+Objectives................................................................................................................................. 4
+Proposed Solution: Enhanced BEMMS ................................................................................ 5
+Resource Requirements .......................................................................................................... 6
+Deliverables ............................................................................................................................. 6
+Suggested Starting Point ........................................................................................................ 7
+Project Plan ............................................................................................................................. 7
+References / Bibliography ...................................................................................................... 7
+2 | Page
+
+--- PAGE 3 ---
+Introduction
+Biomedical equipment plays a critical role in diagnosis, monitoring, treatment, and patient
+safety in modern hospitals. Its value depends not only on purchase, but also on how effectively
+it is maintained, calibrated, tracked, and documented throughout its lifecycle. The World
+Health Organization notes that a sound maintenance programme should combine inspection,
+preventive maintenance, corrective maintenance, and record control in order to reduce failures
+and support safe clinical use.
+In many healthcare settings, maintenance information is still handled through fragmented files,
+manual follow-up, and disconnected records. This weakens service coordination, delays
+response, and limits managerial visibility. For this reason, digital maintenance platforms are
+increasingly important, especially when they integrate equipment records, service history,
+reminders, and performance information within one structured environment.
+This project proposes the development of an enhanced Biomedical Equipment Maintenance
+Management System (BEMMS) for Sri Lankan hospitals. Instead of creating a completely new
+platform, the project will extend a previously developed BEMMS and strengthen it with
+automated technician allocation, integrated maintenance and calibration tracking, technician
+performance monitoring, improved equipment categorisation, and guided fault reporting.
+Background and Motivation
+Biomedical equipment management is broader than fault repair alone. It includes preventive
+maintenance, calibration, work assignment, documentation quality, service prioritisation, and
+monitoring of asset status across departments. Research shows that maintenance systems are
+more effective when they are planned systematically and supported by reliable information
+rather than ad hoc paper-based practice.
+Studies on healthcare maintenance management indicate that effective maintenance supports
+better decision-making, reduces downtime, improves reliability, and helps hospitals use scarce
+technical resources more efficiently. Digital systems are especially useful when they combine
+inventory control, service history, reminders, and management oversight in one platform.
+My earlier BEMMS research addressed the need for a digital maintenance system for Sri
+Lankan hospitals by introducing structured equipment records, QR-code-based fault reporting,
+3 | Page
+
+--- PAGE 4 ---
+maintenance scheduling, and reminder support. That project demonstrated the feasibility of
+replacing several manual processes with a more organised software-based workflow.
+However, the earlier version remains limited when compared with real biomedical engineering
+practice. Technician assignment is not automated, calibration follow-up is not fully integrated
+with maintenance planning, managerial performance visibility is weak, and fault reporting does
+not yet provide strong guidance to users. I am motivated to undertake this project because I
+already understand the existing platform and its gaps, which places me in a strong position to
+extend it in a focused and achievable way.
+Problem in Brief
+The specific problem addressed in this project is that the previously developed BEMMS does
+not yet include several operational and managerial functions required for routine hospital use.
+As a result, technician assignment, calibration follow-up, service supervision, and clear fault
+reporting may still depend on manual coordination, fragmented records, and delayed
+monitoring.
+This problem is worth solving because maintenance management should not be limited to
+recording completed repairs. It should also support planning, prioritisation, supervision,
+documentation quality, and informed decision-making. An enhanced BEMMS that addresses
+these gaps can improve response coordination, strengthen management visibility, and create
+greater practical value for Sri Lankan hospitals than a basic maintenance-only system.
+Aim
+The aim of this project is to develop an enhanced Biomedical Equipment Maintenance
+Management System for Sri Lankan hospitals by extending the existing BEMMS with
+automated technician management, integrated maintenance and calibration support, improved
+equipment organisation, and guided fault reporting using Python, Django, and PostgreSQL.
+Objectives
+• To critically review the biomedical equipment maintenance management domain, with
+emphasis on preventive maintenance, calibration control, reliability, and digital
+maintenance information systems.
+4 | Page
+
+--- PAGE 5 ---
+• To critically study the software technologies and design approaches suitable for developing
+a secure, scalable, and user-friendly hospital maintenance management platform.
+• To analyse the functional limitations of the existing BEMMS and define the requirements
+for an enhanced version aligned with real biomedical engineering workflows.
+• To design and develop an enhanced BEMMS incorporating automatic technician allocation,
+technician performance evaluation, integrated maintenance and calibration reminders,
+department-wise equipment categorisation, and fault suggestion support.
+• To evaluate the effectiveness of the enhanced system through functional testing, scenario-
+based validation, and user-oriented review of workflow relevance.
+• To prepare the final documentation, system explanation, and project presentation.
+Proposed Solution:- Enhanced BEMMS
+The proposed solution is a web-based enhanced version of the existing BEMMS, developed
+using a three-tier architecture consisting of the user interface, application logic, and database
+layer. Django will be used as the main web framework and PostgreSQL will manage structured
+data storage. Role-based access will be applied so that hospital staff, technicians, and managers
+can interact with the system according to their responsibilities.
+The enhanced platform will introduce five major improvements. First, the system will support
+automatic technician allocation based on equipment category, required skill area, technician
+availability, and workload. Second, it will include a manager-only technician performance
+evaluation module that analyses service completion patterns, response time, repeat faults, and
+pending work. Third, maintenance reminders and calibration reminders will be integrated
+within one connected scheduling structure rather than handled separately.
+Fourth, the system will provide improved department-wise equipment categorisation with
+clearer asset-level information and status visibility. Fifth, it will offer fault suggestion support
+so that users reporting a problem can choose guided fault categories and prompts, leading to
+clearer service tickets for the biomedical engineering unit. Together, these enhancements are
+intended to improve coordination, documentation quality, supervision, and decision-making.
+5 | Page
+
+--- PAGE 6 ---
+Figure 1 High-level workflow of the proposed enhanced BEMMS
+The completed prototype will be evaluated through functional test scenarios and workflow-
+based validation so that the project demonstrates both technical operation and practical
+relevance to hospital maintenance activities.
+Resource Requirements
+The main hardware requirement is a laptop or desktop computer for software development,
+testing, and documentation. A smartphone will be useful for QR-based workflow testing.
+Internet access will be required for software packages, development support, and notification
+testing. The main software requirements are Python, Django, PostgreSQL, Visual Studio Code
+or an equivalent IDE, a modern web browser, QR code libraries, charting support for
+dashboards, and Microsoft Word for documentation. Because the project extends an existing
+prototype and uses mainly open-source tools, the expected development cost is low.
+Deliverables
+• An enhanced BEMMS software prototype
+o Automatic technician allocation module
+o Technician performance evaluation dashboard
+o Integrated maintenance and calibration reminder module
+o Improved department-wise equipment categorisation interface
+o Fault suggestion support feature
+• Final report, technical documentation, workflow diagrams, and testing evidence
+6 | Page
+
+--- PAGE 7 ---
+Suggested Starting Point
+The project will begin with a structured review of the current BEMMS prototype in order to
+identify reusable components, database dependencies, and functional gaps. This will be
+followed by a focused literature review on medical equipment maintenance management,
+calibration tracking, preventive maintenance prioritisation, and digital equipment information
+systems. After that, the functional requirements of the enhanced version will be finalised and
+translated into updated system models, database changes, and development milestones.
+Project Plan
+Time
+Activity
+Period
+Week 1 Review existing BEMMS, confirm project scope, and identify functional gaps.
+Week 2 Conduct literature review and define detailed system requirements.
+Week 3 Redesign database and system architecture for the enhanced modules.
+Week 4 Develop automatic technician allocation and task assignment workflow.
+Week 5 Develop the integrated maintenance and calibration reminder module.
+Week 6 Develop technician performance monitoring and improved equipment categorisation.
+Week 7 Implement fault suggestion support and perform testing, debugging, and refinement.
+Week 8 Conduct evaluation and complete final documentation and submission materials.
+References / Bibliography
+1. Nallaperuma, B.C. and Thipakaran, E. Development of a Biomedical Equipment Maintenance
+Management Software for Sri Lankan Hospitals. Available at:
+https://www.esu.lk/research/development-of-a-biomedical-equipment-maintenance-management-
+software-for-sri-lankan-hospitals
+2. Arab-Zozani, M., Imani, A., Doshmangir, L., Dalal, K. and Bahreini, R. (2021) ‘Assessment of
+medical equipment maintenance management: proposed checklist using Iranian experience’,
+BioMedical Engineering OnLine, 20, 49. Available at the publisher page and PubMed.
+3. Bhardwaj, P., Joshi, N.K., Singh, P., Suthar, P., Joshi, V., Jain, Y.K., Charan, J., Ameel, M.,
+Singh, K., Patil, M.S., Gaidhane, A., Syed, Z.Q. and Saxena, D. (2022) ‘Competence-Based
+Assessment of Biomedical Equipment Management and Maintenance System (e-Upkaran) Using
+Benefit Evaluation Framework’, Cureus, 14(10), e30579. Available at PubMed and full text PDF.
+4. Hernández-López, L.A., Pimentel-Aguilar, A.B. and Ortiz-Posadas, M.R. (2020) ‘An index to
+prioritize the preventive maintenance of medical equipment’, Health and Technology, 10(2), pp.
+399–403. Available at PubMed and Springer.
+7 | Page
+
+--- PAGE 8 ---
+5. World Health Organization (2011) Medical equipment maintenance programme overview.
+Geneva: World Health Organization.
+6. World Health Organization (2011) Computerized maintenance management system. Geneva:
+World Health Organization.
+Note: some pages display 2012, but the WHO IRIS record shows 2011, so use one year
+consistently in your document.
+7. Zamzam, A.H., Abdul Wahab, A.K., Azizan, M.M., Satapathy, S.C., Lai, K.W. and Hasikin, K.
+(2021) ‘A systematic review of medical equipment reliability assessment in improving the quality
+of healthcare services’, Frontiers in Public Health, 9, 753951.
+8. Use these in your proposal exactly as above. For the WHO source, I recommend keeping it as
+2011 throughout, because the WHO IRIS catalog record supports tha
+8 | Page

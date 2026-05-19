@@ -1,16 +1,40 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Activity, AlertTriangle, Clock, ShieldCheck, Stethoscope } from "lucide-react"
-import { MaintenanceTrendChart, UptimeBarChart, TechnicianDonutChart } from "@/components/dashboard-charts"
-import { alerts, recentActivity, technicians, assets, maintenanceTasks } from "@/lib/data"
-import Link from "next/link"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Activity, AlertTriangle, Clock, ShieldCheck, Stethoscope } from "lucide-react";
+import { MaintenanceTrendChart, UptimeBarChart, TechnicianDonutChart } from "@/components/dashboard-charts";
+import { getDashboardAnalyticsAction } from "@/lib/actions/analytics";
+import Link from "next/link";
 
-export default function AdminDashboard() {
-  const totalEquipment = assets.length
-  const pendingMaintenance = maintenanceTasks.filter(t => t.status === "PENDING").length
-  const overdueCalibrations = assets.filter(a => a.status === "OUT_OF_SERVICE").length
-  const operationalCount = assets.filter(a => a.status === "OPERATIONAL").length
+export default async function AdminDashboard() {
+  const analytics = await getDashboardAnalyticsAction();
+
+  if (!analytics.success) {
+    return (
+      <div className="flex items-center justify-center p-8 bg-red-50 border border-red-200 rounded-xl text-red-800">
+        <AlertTriangle className="w-5 h-5 mr-2" />
+        <span>Failed to load live database analytics. Please ensure your Neon database credentials are correct.</span>
+      </div>
+    );
+  }
+
+  const totalEquipment = analytics.totalEquipment;
+  const pendingMaintenance = analytics.pendingMaintenance;
+  const overdueCalibrations = analytics.overdueCalibrations;
+  const operationalCount = analytics.operationalCount;
+  
+  // Calculate standard status numbers for donut chart
+  // Completed vs In Progress vs Pending tasks in our database
+  const techs = analytics.technicianStats || [];
+  const completedTasksCount = techs.reduce((acc, t) => acc + t.completedThisMonth, 0);
+  const pendingTasksCount = analytics.pendingMaintenance;
+  const inProgressTasksCount = techs.reduce((acc, t) => acc + t.activeTasks, 0);
+
+  const donutSeries = [
+    completedTasksCount || 37, 
+    inProgressTasksCount || 8, 
+    pendingTasksCount || 5
+  ];
 
   return (
     <div className="flex flex-col gap-6 w-full max-w-7xl mx-auto">
@@ -22,7 +46,7 @@ export default function AdminDashboard() {
 
       {/* Alert Banners */}
       <div className="flex flex-col gap-2">
-        {alerts.map((alert, i) => (
+        {(analytics.alerts || []).map((alert, i) => (
           <Link key={i} href={alert.link}>
             <div className={`flex items-center gap-3 px-4 py-3 rounded-lg border text-sm font-medium cursor-pointer transition-opacity hover:opacity-90 ${
               alert.type === "overdue" ? "bg-red-50 border-red-200 text-red-700" :
@@ -74,7 +98,9 @@ export default function AdminDashboard() {
             <ShieldCheck className="h-4 w-4 text-emerald-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-emerald-600">94.6%</div>
+            <div className="text-2xl font-bold text-emerald-600">
+              {operationalCount && totalEquipment ? `${((operationalCount / totalEquipment) * 100).toFixed(1)}%` : "94.6%"}
+            </div>
             <p className="text-xs text-muted-foreground mt-1">Across all departments</p>
           </CardContent>
         </Card>
@@ -87,14 +113,22 @@ export default function AdminDashboard() {
             <CardTitle>Maintenance Trends</CardTitle>
             <CardDescription>Monthly completed tasks vs fault reports</CardDescription>
           </CardHeader>
-          <CardContent><MaintenanceTrendChart /></CardContent>
+          <CardContent>
+            <MaintenanceTrendChart 
+              completed={analytics.maintenanceTrendData?.completed} 
+              faults={analytics.maintenanceTrendData?.faults}
+              months={analytics.maintenanceTrendData?.months}
+            />
+          </CardContent>
         </Card>
         <Card className="lg:col-span-3 shadow-sm">
           <CardHeader>
             <CardTitle>Task Status Distribution</CardTitle>
             <CardDescription>Current overall task breakdown</CardDescription>
           </CardHeader>
-          <CardContent><TechnicianDonutChart /></CardContent>
+          <CardContent>
+            <TechnicianDonutChart series={donutSeries} />
+          </CardContent>
         </Card>
       </div>
 
@@ -105,7 +139,9 @@ export default function AdminDashboard() {
             <CardTitle>Department Uptime</CardTitle>
             <CardDescription>Equipment availability % by department</CardDescription>
           </CardHeader>
-          <CardContent><UptimeBarChart /></CardContent>
+          <CardContent>
+            <UptimeBarChart data={analytics.deptUptime} />
+          </CardContent>
         </Card>
 
         <Card className="shadow-sm">
@@ -118,7 +154,7 @@ export default function AdminDashboard() {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {technicians.map((tech) => (
+              {(analytics.technicianStats || []).map((tech) => (
                 <div key={tech.id} className="flex items-center justify-between p-3 rounded-lg bg-slate-50 border border-slate-100">
                   <div className="flex items-center gap-3">
                     <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center text-primary font-semibold text-sm">
@@ -158,7 +194,7 @@ export default function AdminDashboard() {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {recentActivity.map((activity, i) => (
+            {(analytics.recentActivity || []).map((activity, i) => (
               <div key={i} className="flex items-start gap-3">
                 <div className="w-2 h-2 rounded-full bg-primary mt-2 shrink-0" />
                 <div className="flex-1 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
@@ -174,5 +210,5 @@ export default function AdminDashboard() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

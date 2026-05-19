@@ -19,19 +19,51 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Stethoscope, Eye, EyeOff, ShieldCheck } from "lucide-react";
+import { Stethoscope, Eye, EyeOff, ShieldCheck, AlertCircle, Loader2 } from "lucide-react";
 import Link from "next/link";
+import { signInAction } from "@/lib/actions/auth";
 
 export default function LoginPage() {
-  const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const handleSignIn = () => {
-    if (role === "admin") router.push("/dashboard/admin");
-    else if (role === "technician") router.push("/dashboard/technician");
-    else if (role === "clinical") router.push("/dashboard/clinical");
-    else router.push("/dashboard/admin"); // default
+  const handleSignIn = async () => {
+    if (!email || !password || !role) {
+      setError("Please fill in all email, password, and role fields.");
+      return;
+    }
+
+    setError("");
+    setLoading(true);
+
+    const formData = new FormData();
+    formData.append("email", email);
+    formData.append("password", password);
+    formData.append("role", role);
+
+    const result = await signInAction(null, formData);
+
+    if (result.success) {
+      // Direct user based on authorized session role
+      if (role === "admin") {
+        router.push("/dashboard/admin");
+      } else if (role === "technician") {
+        router.push("/dashboard/technician");
+      } else if (role === "clinical") {
+        router.push("/dashboard/clinical");
+      } else {
+        router.push("/dashboard/admin");
+      }
+      router.refresh();
+    } else {
+      setError(result.error || "Sign in failed. Please try again.");
+      setLoading(false);
+    }
   };
 
   return (
@@ -63,6 +95,13 @@ export default function LoginPage() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-5">
+            {error && (
+              <div className="flex items-center gap-2 p-3 rounded-lg bg-red-50 border border-red-200 text-sm text-red-700">
+                <AlertCircle className="w-4 h-4 shrink-0" />
+                <span>{error}</span>
+              </div>
+            )}
+
             <div className="space-y-2">
               <Label htmlFor="email">Email Address</Label>
               <Input
@@ -70,6 +109,9 @@ export default function LoginPage() {
                 type="email"
                 placeholder="you@hospital.lk"
                 className="h-11"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={loading}
               />
             </div>
 
@@ -81,11 +123,15 @@ export default function LoginPage() {
                   type={showPassword ? "text" : "password"}
                   placeholder="Enter your password"
                   className="h-11 pr-10"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  disabled={loading}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                  disabled={loading}
                 >
                   {showPassword ? (
                     <EyeOff className="w-4 h-4" />
@@ -98,7 +144,7 @@ export default function LoginPage() {
 
             <div className="space-y-2">
               <Label htmlFor="role">Role</Label>
-              <Select onValueChange={(val) => setRole(val ?? "")} value={role}>
+              <Select onValueChange={(val) => setRole(val ?? "")} value={role} disabled={loading}>
                 <SelectTrigger id="role" className="h-11">
                   <SelectValue placeholder="Select your role..." />
                 </SelectTrigger>
@@ -133,6 +179,7 @@ export default function LoginPage() {
                   type="checkbox"
                   id="remember"
                   className="rounded border-slate-300 text-primary"
+                  disabled={loading}
                 />
                 <Label
                   htmlFor="remember"
@@ -152,8 +199,16 @@ export default function LoginPage() {
             <Button
               onClick={handleSignIn}
               className="w-full h-11 text-sm font-semibold mt-2"
+              disabled={loading}
             >
-              Sign In
+              {loading ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin mr-2" />
+                  Signing In...
+                </>
+              ) : (
+                "Sign In"
+              )}
             </Button>
 
             <div className="flex items-center gap-3 my-4">
