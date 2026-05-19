@@ -104,9 +104,9 @@ export default async function ClinicalDashboard() {
                       {fault.department} · {fault.category} · {fault.id}
                     </div>
                     <p className="text-sm text-slate-600 mt-2 line-clamp-2">{fault.description}</p>
-                    {fault.imageUrl && (
+                    {fault.images && fault.images.length > 0 && (
                       <div className="mt-2 text-xs text-primary font-medium">
-                        🖼️ Image attached
+                        🖼️ {fault.images.length} {fault.images.length === 1 ? "Image" : "Images"} attached
                       </div>
                     )}
                   </div>

@@ -1,7 +1,8 @@
 "use client"
 
 import { usePathname, useRouter } from "next/navigation"
-import { signOutAction } from "@/lib/actions/auth"
+import { signOutAction, getCurrentUserAction } from "@/lib/actions/auth"
+import { useEffect, useState } from "react"
 import {
   Sidebar,
   SidebarContent,
@@ -17,12 +18,9 @@ import {
   SidebarMenuSubItem,
   SidebarMenuSubButton,
 } from "@/components/ui/sidebar"
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import {
   Activity,
   AlertTriangle,
-  ChevronRight,
-  FlaskConical,
   LayoutDashboard,
   LogOut,
   Settings,
@@ -36,7 +34,7 @@ import Link from "next/link"
 // ─── Nav config per role ────────────────────────────────────────────────────
 
 const adminNav = [
-  { href: "/dashboard/admin", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/assets", label: "Asset Management", icon: Activity },
   { href: "/maintenance", label: "Maintenance", icon: Wrench },
   { href: "/team", label: "Technicians", icon: Users },
@@ -44,25 +42,19 @@ const adminNav = [
 ]
 
 const technicianNav = [
-  { href: "/dashboard/technician", label: "My Workspace", icon: LayoutDashboard },
+  { href: "/technician/dashboard", label: "My Workspace", icon: LayoutDashboard },
   { href: "/assets", label: "Equipment List", icon: Activity },
   { href: "/maintenance", label: "My Tasks", icon: ClipboardList },
   { href: "/fault-report", label: "Report Fault", icon: AlertTriangle, danger: true },
 ]
 
 const clinicalNav = [
-  { href: "/dashboard/clinical", label: "My Dashboard", icon: LayoutDashboard },
+  { href: "/clinic/dashboard", label: "My Dashboard", icon: LayoutDashboard },
   { href: "/fault-report", label: "Report a Fault", icon: AlertTriangle, danger: true },
-  { href: "/dashboard/clinical", label: "My Submissions", icon: ClipboardList },
+  { href: "/clinic/dashboard", label: "My Submissions", icon: ClipboardList },
 ]
 
 // ─── Role detection ──────────────────────────────────────────────────────────
-
-function useRole(pathname: string) {
-  if (pathname.startsWith("/dashboard/technician")) return "technician"
-  if (pathname.startsWith("/dashboard/clinical")) return "clinical"
-  return "admin"
-}
 
 const roleLabel = {
   admin: "Administrator",
@@ -80,8 +72,27 @@ const roleBadgeColor = {
 
 export function AppSidebar() {
   const pathname = usePathname()
-  const role = useRole(pathname)
   const router = useRouter()
+  
+  // Initial fallback guess based on URL
+  const pathnameRole = pathname.startsWith("/technician") ? "technician" :
+                       pathname.startsWith("/clinic") ? "clinical" : "admin";
+                       
+  const [role, setRole] = useState<"admin" | "technician" | "clinical">(pathnameRole)
+
+  useEffect(() => {
+    async function loadUserRole() {
+      try {
+        const user = await getCurrentUserAction()
+        if (user) {
+          setRole(user.role.toLowerCase() as "admin" | "technician" | "clinical")
+        }
+      } catch (err) {
+        console.error("Failed to load user role in sidebar:", err)
+      }
+    }
+    loadUserRole()
+  }, [pathname])
 
   const handleLogout = async () => {
     await signOutAction();
@@ -133,58 +144,7 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        {/* ── Dev Role Switcher ──────────────────────────────── */}
-        <SidebarGroup>
-          <SidebarGroupLabel className="flex items-center gap-1.5 text-amber-600">
-            <FlaskConical className="w-3 h-3" />
-            Dev
-          </SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              <Collapsible defaultOpen className="group/collapsible">
-                <SidebarMenuItem>
-                  <CollapsibleTrigger
-                    render={
-                      <SidebarMenuButton className="w-full text-amber-700 hover:bg-amber-50 hover:text-amber-800" />
-                    }
-                  >
-                    <Users className="w-4 h-4" />
-                    <span>Role Preview</span>
-                    <ChevronRight className="ml-auto w-4 h-4 transition-transform group-data-[state=open]/collapsible:rotate-90" />
-                  </CollapsibleTrigger>
-                  <CollapsibleContent>
-                    <SidebarMenuSub>
-                      <SidebarMenuSubItem>
-                        <SidebarMenuSubButton
-                          href="/dashboard/admin"
-                          className={pathname.startsWith("/dashboard/admin") ? "text-primary font-semibold" : ""}
-                        >
-                          Admin
-                        </SidebarMenuSubButton>
-                      </SidebarMenuSubItem>
-                      <SidebarMenuSubItem>
-                        <SidebarMenuSubButton
-                          href="/dashboard/technician"
-                          className={pathname.startsWith("/dashboard/technician") ? "text-primary font-semibold" : ""}
-                        >
-                          Technician
-                        </SidebarMenuSubButton>
-                      </SidebarMenuSubItem>
-                      <SidebarMenuSubItem>
-                        <SidebarMenuSubButton
-                          href="/dashboard/clinical"
-                          className={pathname.startsWith("/dashboard/clinical") ? "text-primary font-semibold" : ""}
-                        >
-                          Clinical
-                        </SidebarMenuSubButton>
-                      </SidebarMenuSubItem>
-                    </SidebarMenuSub>
-                  </CollapsibleContent>
-                </SidebarMenuItem>
-              </Collapsible>
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+
       </SidebarContent>
 
       <SidebarFooter className="p-4 border-t border-slate-100">

@@ -9,6 +9,7 @@ import { createTask } from "../db/crud/tasks/write";
 import { logActivity } from "../db/crud/activities/write";
 import { getCurrentUserAction } from "./auth";
 import { priorityEnum } from "../db/schemas/faults";
+import { getDriveImageUrl } from "../drive-image";
 
 export async function reportFaultAction(formData: FormData) {
   try {
@@ -19,7 +20,20 @@ export async function reportFaultAction(formData: FormData) {
     const category = formData.get("category") as string;
     const description = formData.get("description") as string;
     const priority = formData.get("priority") as "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
-    const imageUrl = formData.get("imageUrl") as string || null;
+    const rawImagesJson = formData.get("images") as string || "[]";
+    let rawImages: string[] = [];
+    try {
+      rawImages = JSON.parse(rawImagesJson);
+    } catch (e) {
+      rawImages = [];
+    }
+
+    // Clean Google Drive URLs if provided
+    const images = rawImages
+      .filter((url: string) => url.trim() !== "")
+      .map((url: string) => {
+        return url.includes("drive.google.com") ? getDriveImageUrl(url) : url;
+      });
 
     if (!assetId || !category || !description || !priority) {
       return { success: false, error: "Please fill all required fields." };
@@ -44,7 +58,7 @@ export async function reportFaultAction(formData: FormData) {
       submittedBy: reporterName,
       submittedAt: nowStr,
       department: asset.department,
-      imageUrl,
+      images,
     });
 
     if (!fault) {
@@ -101,8 +115,8 @@ export async function reportFaultAction(formData: FormData) {
       );
     }
 
-    revalidatePath("/dashboard/clinical");
-    revalidatePath("/dashboard/admin");
+    revalidatePath("/clinic/dashboard");
+    revalidatePath("/admin/dashboard");
     revalidatePath("/fault-report");
     revalidatePath("/maintenance");
     return { 

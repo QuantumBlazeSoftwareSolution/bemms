@@ -73,13 +73,13 @@ export default function SignupPage() {
     if (result.success) {
       // Redirect based on role
       if (role === "admin") {
-        router.push("/dashboard/admin");
+        router.push("/admin/dashboard");
       } else if (role === "technician") {
-        router.push("/dashboard/technician");
+        router.push("/technician/dashboard");
       } else if (role === "clinical") {
-        router.push("/dashboard/clinical");
+        router.push("/clinic/dashboard");
       } else {
-        router.push("/dashboard/admin");
+        router.push("/admin/dashboard");
       }
       router.refresh();
     } else {

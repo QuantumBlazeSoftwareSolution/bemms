@@ -1,10 +1,11 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { getAllAssets, getAssetById } from "../db/crud/assets/read";
+import { getAllAssets, getAssetById, getAssetByQrCode } from "../db/crud/assets/read";
 import { createAsset, updateAsset } from "../db/crud/assets/write";
 import { logActivity } from "../db/crud/activities/write";
 import { getCurrentUserAction } from "./auth";
+import crypto from "crypto";
 
 export async function getAssetsAction() {
   return await getAllAssets();
@@ -19,7 +20,7 @@ export async function createAssetAction(formData: FormData) {
     const user = await getCurrentUserAction();
     const operator = user ? `${user.role === "ADMIN" ? "Manager" : "Tech"}. ${user.name}` : "System";
 
-    const id = formData.get("id") as string;
+    const qrCode = formData.get("id") as string; // Raw physical scanned barcode value
     const name = formData.get("name") as string;
     const brand = formData.get("brand") as string;
     const model = formData.get("model") as string;
@@ -30,17 +31,22 @@ export async function createAssetAction(formData: FormData) {
     const lastMaintenance = formData.get("lastMaintenance") as string || new Date().toISOString().split("T")[0];
     const nextCalibration = formData.get("nextCalibration") as string || new Date().toISOString().split("T")[0];
 
-    if (!id || !name || !brand || !model || !serialNumber || !department || !supplier || !maintenanceFrequency) {
+    if (!qrCode || !name || !brand || !model || !serialNumber || !department || !supplier || !maintenanceFrequency) {
       return { success: false, error: "Please fill all required fields." };
     }
 
-    const existing = await getAssetById(id);
+    // Check if the physical QR code is already registered
+    const existing = await getAssetByQrCode(qrCode);
     if (existing) {
-      return { success: false, error: `Asset with ID ${id} already exists.` };
+      return { success: false, error: `Asset with QR Code "${qrCode}" is already registered.` };
     }
+
+    // Generate a clean, URL-safe UUID for database primary key and dynamic routing
+    const id = crypto.randomUUID();
 
     const newAsset = await createAsset({
       id,
+      qrCode,
       name,
       brand,
       model,

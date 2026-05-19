@@ -16,11 +16,13 @@ export default async function AssetsPage() {
             View and manage all hospital medical equipment.
           </p>
         </div>
-        <Link href="/fault-report">
-          <Button className="flex items-center gap-2 shadow-sm">
-            <Plus className="w-4 h-4" /> Add Asset / Report
-          </Button>
-        </Link>
+        <div className="flex gap-2">
+          <Link href="/assets/new">
+            <Button className="flex items-center gap-2 shadow-sm bg-primary hover:bg-primary/95 text-white">
+              <Plus className="w-4 h-4" /> Add Asset
+            </Button>
+          </Link>
+        </div>
       </div>
 
       {assets.length === 0 ? (

@@ -13,11 +13,11 @@ export async function proxy(request: NextRequest) {
   if (pathname === "/login" || pathname === "/signup" || pathname === "/") {
     if (user) {
       if (user.role === "ADMIN") {
-        return NextResponse.redirect(new URL("/dashboard/admin", request.url));
+        return NextResponse.redirect(new URL("/admin/dashboard", request.url));
       } else if (user.role === "TECHNICIAN") {
-        return NextResponse.redirect(new URL("/dashboard/technician", request.url));
+        return NextResponse.redirect(new URL("/technician/dashboard", request.url));
       } else if (user.role === "CLINICAL") {
-        return NextResponse.redirect(new URL("/dashboard/clinical", request.url));
+        return NextResponse.redirect(new URL("/clinic/dashboard", request.url));
       }
     }
     if (pathname === "/") {
@@ -27,19 +27,19 @@ export async function proxy(request: NextRequest) {
   }
 
   // 2. Role-Based Path Restrictions
-  if (pathname.startsWith("/dashboard/admin")) {
+  if (pathname.startsWith("/admin")) {
     if (!user || user.role !== "ADMIN") {
       return NextResponse.redirect(new URL("/login", request.url));
     }
   }
 
-  if (pathname.startsWith("/dashboard/technician")) {
+  if (pathname.startsWith("/technician")) {
     if (!user || user.role !== "TECHNICIAN") {
       return NextResponse.redirect(new URL("/login", request.url));
     }
   }
 
-  if (pathname.startsWith("/dashboard/clinical")) {
+  if (pathname.startsWith("/clinic")) {
     if (!user || user.role !== "CLINICAL") {
       return NextResponse.redirect(new URL("/login", request.url));
     }
@@ -52,11 +52,11 @@ export async function proxy(request: NextRequest) {
     }
     // Redirect to respective sub-dashboards
     if (user.role === "ADMIN") {
-      return NextResponse.redirect(new URL("/dashboard/admin", request.url));
+      return NextResponse.redirect(new URL("/admin/dashboard", request.url));
     } else if (user.role === "TECHNICIAN") {
-      return NextResponse.redirect(new URL("/dashboard/technician", request.url));
+      return NextResponse.redirect(new URL("/technician/dashboard", request.url));
     } else if (user.role === "CLINICAL") {
-      return NextResponse.redirect(new URL("/dashboard/clinical", request.url));
+      return NextResponse.redirect(new URL("/clinic/dashboard", request.url));
     }
   }
 
@@ -76,6 +76,9 @@ export async function proxy(request: NextRequest) {
 
 export const config = {
   matcher: [
+    "/admin/:path*",
+    "/technician/:path*",
+    "/clinic/:path*",
     "/dashboard/:path*",
     "/assets/:path*",
     "/maintenance/:path*",

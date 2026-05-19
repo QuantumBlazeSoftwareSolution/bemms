@@ -7,7 +7,8 @@ export const assetStatusEnum = pgEnum("asset_status", [
 ]);
 
 export const assetsTable = pgTable("assets", {
-  id: text("id").primaryKey(), // Custom ID (e.g., "AST-001")
+  id: text("id").primaryKey(), // UUID Primary Key (text representation is fully compatible with foreign keys and existing seeds)
+  qrCode: text("qr_code").unique(), // Raw Scanned QR/Barcode value (nullable for existing row compatibility)
   name: text("name").notNull(),
   brand: text("brand").notNull(),
   model: text("model").notNull(),

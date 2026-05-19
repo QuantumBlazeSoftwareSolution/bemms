@@ -36,3 +36,17 @@ export async function getAssetsByDepartment(department: string): Promise<Asset[]
     return [];
   }
 }
+
+export async function getAssetByQrCode(qrCode: string): Promise<Asset | null> {
+  try {
+    const result = await db
+      .select()
+      .from(assetsTable)
+      .where(eq(assetsTable.qrCode, qrCode))
+      .limit(1);
+    return result[0] || null;
+  } catch (error) {
+    console.error("Error fetching asset by QR code:", error);
+    return null;
+  }
+}

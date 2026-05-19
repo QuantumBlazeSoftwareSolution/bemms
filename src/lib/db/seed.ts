@@ -104,6 +104,7 @@ async function main() {
     const assets = await db.insert(schema.assetsTable).values([
       {
         id: "AST-001",
+        qrCode: "AST-001",
         name: "Defibrillator",
         brand: "Philips",
         model: "HeartStart Intrepid",
@@ -118,6 +119,7 @@ async function main() {
       },
       {
         id: "AST-002",
+        qrCode: "AST-002",
         name: "MRI Scanner",
         brand: "Siemens",
         model: "MAGNETOM Lumina",
@@ -132,6 +134,7 @@ async function main() {
       },
       {
         id: "AST-003",
+        qrCode: "AST-003",
         name: "Ventilator",
         brand: "Medtronic",
         model: "Puritan Bennett 980",
@@ -146,6 +149,7 @@ async function main() {
       },
       {
         id: "AST-004",
+        qrCode: "AST-004",
         name: "ECG Machine",
         brand: "GE Healthcare",
         model: "MAC 2000",
@@ -160,6 +164,7 @@ async function main() {
       },
       {
         id: "AST-005",
+        qrCode: "AST-005",
         name: "Infusion Pump",
         brand: "B. Braun",
         model: "Infusomat Space",
@@ -174,6 +179,7 @@ async function main() {
       },
       {
         id: "AST-006",
+        qrCode: "AST-006",
         name: "Patient Monitor",
         brand: "Mindray",
         model: "MEC-2000",

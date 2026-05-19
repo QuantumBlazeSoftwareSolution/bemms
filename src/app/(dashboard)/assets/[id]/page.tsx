@@ -11,9 +11,12 @@ import Link from "next/link";
 
 export default async function AssetDetailsPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params;
-  const assetId = resolvedParams.id.toUpperCase();
+  const assetId = resolvedParams.id;
   
-  const asset = await getAssetByIdAction(assetId);
+  let asset = await getAssetByIdAction(assetId);
+  if (!asset) {
+    asset = await getAssetByIdAction(assetId.toUpperCase());
+  }
 
   if (!asset) {
     notFound();
@@ -67,7 +70,7 @@ export default async function AssetDetailsPage({ params }: { params: Promise<{ i
         </div>
         <div className="flex gap-2">
           <QRScannerModal />
-          <Link href="/fault-report">
+          <Link href={`/fault-report?assetId=${asset.id}`}>
             <Button className="shadow-sm">Report Issue</Button>
           </Link>
         </div>

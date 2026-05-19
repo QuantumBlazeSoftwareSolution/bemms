@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, pgEnum } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, pgEnum, jsonb } from "drizzle-orm/pg-core";
 import { assetsTable } from "./assets";
 
 export const priorityEnum = pgEnum("priority", ["LOW", "MEDIUM", "HIGH", "CRITICAL"]);
@@ -11,7 +11,7 @@ export const faultReportsTable = pgTable("fault_reports", {
     .notNull(),
   category: text("category").notNull(), // Mechanical, Software, Power, etc.
   description: text("description").notNull(),
-  imageUrl: text("image_url"), // Image uploads support
+  images: jsonb("images").$type<string[]>().default([]), // Supports multiple images via JSONB array
   priority: priorityEnum("priority").default("MEDIUM").notNull(),
   status: faultStatusEnum("status").default("OPEN").notNull(),
   submittedBy: text("submitted_by").notNull(), // E.g., "Dr. Perera"

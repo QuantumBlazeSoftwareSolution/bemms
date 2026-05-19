@@ -5,6 +5,7 @@ import { CheckCircle2, Clock, PlayCircle, Wrench, ClipboardList, CalendarCheck, 
 import { getCurrentUserAction } from "@/lib/actions/auth";
 import { getTasksByTechnician, getAllTasks } from "@/lib/db/crud/tasks/read";
 import { getAssetById } from "@/lib/db/crud/assets/read";
+import { getFaultById } from "@/lib/db/crud/faults/read";
 import { getRecentActivities } from "@/lib/db/crud/activities/read";
 import { redirect } from "next/navigation";
 import Link from "next/link";
@@ -20,14 +21,29 @@ export default async function TechnicianDashboard() {
   const dbTasks = await getTasksByTechnician(me.id);
   const allDbTasks = await getAllTasks();
 
-  // Resolve assets name mapping
+  // Resolve assets and breakdown images mapping
   const tasksWithAssets = await Promise.all(
     dbTasks.map(async (task) => {
       const asset = await getAssetById(task.assetId);
+      
+      let images: string[] = [];
+      let faultDescription = "";
+      const match = task.notes?.match(/breakdown report #([A-Z0-9-]+)/i);
+      const faultId = match ? match[1] : null;
+      if (faultId) {
+        const fault = await getFaultById(faultId);
+        if (fault) {
+          images = fault.images || [];
+          faultDescription = fault.description || "";
+        }
+      }
+
       return {
         ...task,
         assetName: asset ? asset.name : "Unknown Asset",
         department: asset ? asset.department : "Unknown Unit",
+        images,
+        faultDescription,
       };
     })
   );
@@ -127,19 +143,49 @@ export default async function TechnicianDashboard() {
             {tasksWithAssets.map((task) => (
               <div
                 key={task.id}
-                className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-lg border border-slate-100 bg-slate-50/50 hover:bg-slate-50 transition-colors"
+                className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 p-4 rounded-lg border border-slate-100 bg-slate-50/50 hover:bg-slate-50 transition-colors"
               >
                 <div className="flex items-start gap-3">
-                  <div className="mt-0.5">{getStatusIcon(task.status)}</div>
+                  <div className="mt-1">{getStatusIcon(task.status)}</div>
                   <div>
                     <div className="font-medium text-slate-900">{task.assetName}</div>
                     <div className="text-xs text-slate-500 mt-0.5">
                       {task.type} · {task.department} · {task.id}
                     </div>
                     {task.notes && (
-                      <p className="text-xs text-amber-700 bg-amber-50 px-2 py-1 rounded border border-amber-100 mt-1 max-w-xl">
+                      <p className="text-xs text-amber-700 bg-amber-50 px-2.5 py-1.5 rounded border border-amber-100 mt-1 max-w-xl">
                         {task.notes}
                       </p>
+                    )}
+
+                    {task.faultDescription && (
+                      <div className="text-xs text-slate-600 bg-slate-100/80 px-2.5 py-1.5 rounded border border-slate-200 mt-1.5 max-w-xl">
+                        <span className="font-semibold text-slate-700">Problem Description: </span>
+                        {task.faultDescription}
+                      </div>
+                    )}
+
+                    {task.images && task.images.length > 0 && (
+                      <div className="mt-3">
+                        <span className="text-xs font-semibold text-slate-500 block mb-1.5">🖼️ Evidence Photos ({task.images.length}):</span>
+                        <div className="flex flex-wrap gap-2">
+                          {task.images.map((imgUrl, i) => (
+                            <a
+                              key={i}
+                              href={imgUrl}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="relative w-16 h-16 rounded-md overflow-hidden border border-slate-200 hover:border-primary transition-all duration-200 cursor-zoom-in hover:scale-105 inline-block shadow-sm"
+                            >
+                              <img
+                                src={imgUrl}
+                                alt={`Evidence ${i + 1}`}
+                                className="w-full h-full object-cover"
+                              />
+                            </a>
+                          ))}
+                        </div>
+                      </div>
                     )}
                   </div>
                 </div>

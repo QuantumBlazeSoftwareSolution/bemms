@@ -1,0 +1,1 @@
+ALTER TABLE "fault_reports" RENAME COLUMN "image_url" TO "images";

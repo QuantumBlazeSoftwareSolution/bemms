@@ -1,14 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { AlertCircle, Camera, UploadCloud, Loader2, CheckCircle2 } from "lucide-react";
+import { AlertCircle, Camera, UploadCloud, Loader2, CheckCircle2, Plus, Trash } from "lucide-react";
 import { reportFaultAction } from "@/lib/actions/faults";
 
 interface Asset {
@@ -24,11 +25,13 @@ interface FaultReportClientProps {
 }
 
 export function FaultReportClient({ assets }: FaultReportClientProps) {
-  const [selectedAsset, setSelectedAsset] = useState("");
+  const searchParams = useSearchParams();
+  const initialAssetId = searchParams.get("assetId") || "";
+  const [selectedAsset, setSelectedAsset] = useState(initialAssetId);
   const [category, setCategory] = useState("");
   const [priority, setPriority] = useState("MEDIUM");
   const [description, setDescription] = useState("");
-  const [imageUrl, setImageUrl] = useState(""); // Simplified image path
+  const [images, setImages] = useState<string[]>([""]); // Multi-image links array
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
@@ -48,7 +51,7 @@ export function FaultReportClient({ assets }: FaultReportClientProps) {
     formData.append("category", category);
     formData.append("priority", priority.toUpperCase());
     formData.append("description", description);
-    formData.append("imageUrl", imageUrl || "None");
+    formData.append("images", JSON.stringify(images.filter(img => img.trim() !== "")));
 
     const result = await reportFaultAction(formData);
     setLoading(false);
@@ -178,20 +181,54 @@ export function FaultReportClient({ assets }: FaultReportClientProps) {
           />
         </div>
 
-        <div className="space-y-2">
-          <Label>Photo / Evidence</Label>
-          <div 
-            onClick={() => setImageUrl("/uploads/evidence.jpg")}
-            className="border-2 border-dashed border-slate-200 rounded-lg p-8 flex flex-col items-center justify-center text-center hover:bg-slate-50 transition-colors cursor-pointer group"
-          >
-            <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center mb-3 group-hover:bg-slate-200 transition-colors">
-              <Camera className="w-6 h-6 text-slate-500" />
-            </div>
-            <p className="text-sm font-medium text-slate-700">
-              {imageUrl ? "📸 Evidence photo linked successfully" : "Click to mock-upload photo"}
-            </p>
-            <p className="text-xs text-slate-500 mt-1">or drag and drop (Auto-handles compression)</p>
+        <div className="space-y-3">
+          <Label className="flex items-center justify-between">
+            <span>Photos / Evidence (Google Drive Shareable Links)</span>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => setImages([...images, ""])}
+              className="h-8 px-2 flex items-center gap-1 text-xs border-primary/20 text-primary hover:bg-primary/5"
+            >
+              <Plus className="w-3.5 h-3.5" /> Add Image Link
+            </Button>
+          </Label>
+          <div className="space-y-2">
+            {images.map((imgUrl, index) => (
+              <div key={index} className="flex gap-2 items-center">
+                <Input
+                  type="url"
+                  placeholder="e.g., https://drive.google.com/file/d/.../view?usp=sharing"
+                  value={imgUrl}
+                  onChange={(e) => {
+                    const newImages = [...images];
+                    newImages[index] = e.target.value;
+                    setImages(newImages);
+                  }}
+                  disabled={loading}
+                  className="border-slate-200 flex-1 font-sans"
+                />
+                {images.length > 1 && (
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => {
+                      const newImages = images.filter((_, i) => i !== index);
+                      setImages(newImages);
+                    }}
+                    className="h-10 w-10 text-destructive hover:text-destructive hover:bg-destructive/5 shrink-0"
+                  >
+                    <Trash className="w-4 h-4" />
+                  </Button>
+                )}
+              </div>
+            ))}
           </div>
+          <p className="text-xs text-muted-foreground mt-1">
+            Provide one or more Google Drive shareable photo links. We will automatically convert and display the image gallery natively in the dashboards.
+          </p>
         </div>
       </CardContent>
       <CardFooter className="bg-slate-50/50 border-t border-slate-100 flex justify-end gap-3 p-6">

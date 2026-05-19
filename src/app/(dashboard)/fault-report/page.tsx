@@ -1,5 +1,6 @@
 import { getAssetsAction } from "@/lib/actions/assets";
 import { FaultReportClient } from "@/components/FaultReportClient";
+import { Suspense } from "react";
 
 export default async function FaultReportPage() {
   // Fetch real database assets to populate the dropdown
@@ -22,7 +23,13 @@ export default async function FaultReportPage() {
         </p>
       </div>
 
-      <FaultReportClient assets={formattedAssets} />
+      <Suspense fallback={
+        <div className="flex items-center justify-center p-8 bg-white rounded-lg border border-slate-100 shadow-sm text-slate-500 text-sm gap-2">
+          Loading report form...
+        </div>
+      }>
+        <FaultReportClient assets={formattedAssets} />
+      </Suspense>
     </div>
   );
 }

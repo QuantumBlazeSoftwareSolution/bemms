@@ -34,7 +34,7 @@ export async function updateTaskStatusAction(taskId: string, status: "PENDING" |
       await logActivity(`Cancelled task #${taskId}.`, operator);
     }
 
-    revalidatePath("/dashboard/technician");
+    revalidatePath("/technician/dashboard");
     revalidatePath("/maintenance");
     return { success: true };
   } catch (error: any) {
@@ -101,8 +101,8 @@ export async function completeTaskAction(
       operator
     );
 
-    revalidatePath("/dashboard/technician");
-    revalidatePath("/dashboard/admin");
+    revalidatePath("/technician/dashboard");
+    revalidatePath("/admin/dashboard");
     revalidatePath("/assets");
     revalidatePath("/maintenance");
     return { success: true, task: completedTask };
