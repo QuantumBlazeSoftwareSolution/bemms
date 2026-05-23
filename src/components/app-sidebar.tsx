@@ -55,7 +55,7 @@ const technicianNav: NavItem[] = [
 const clinicalNav: NavItem[] = [
   { href: "/clinic/dashboard", label: "My Dashboard", icon: LayoutDashboard },
   { href: "/fault-report", label: "Report a Fault", icon: AlertTriangle, danger: true },
-  { href: "/clinic/dashboard", label: "My Submissions", icon: ClipboardList },
+  { href: "/clinic/submissions", label: "My Submissions", icon: ClipboardList },
 ]
 
 // ─── Role detection ──────────────────────────────────────────────────────────

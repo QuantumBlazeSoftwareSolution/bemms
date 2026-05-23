@@ -3,19 +3,39 @@ import { Badge } from "@/components/ui/badge";
 import { AlertCircle, Clock, QrCode, TriangleAlert } from "lucide-react";
 import { getAllFaults } from "@/lib/db/crud/faults/read";
 import { getAssetById } from "@/lib/db/crud/assets/read";
+import { getAllTasks } from "@/lib/db/crud/tasks/read";
+import { getUserById } from "@/lib/db/crud/users/read";
 import { ClinicalQRScanner } from "@/components/ClinicalQRScanner";
 import Link from "next/link";
 
 export default async function ClinicalDashboard() {
   const dbFaults = await getAllFaults();
+  const allTasks = await getAllTasks();
 
-  // Dynamically resolve equipment names from their DB rows
+  // Dynamically resolve equipment names & assigned technicians from DB relationships
   const resolvedFaults = await Promise.all(
     dbFaults.map(async (fault) => {
       const asset = await getAssetById(fault.assetId);
+      
+      // Find the associated repair task
+      const associatedTask = allTasks.find(
+        (t) => t.notes && t.notes.includes(`breakdown report #${fault.id}`)
+      );
+      
+      let techName = "Pending Allocation";
+      if (associatedTask) {
+        if (associatedTask.technicianId) {
+          const tech = await getUserById(associatedTask.technicianId);
+          if (tech) techName = tech.name;
+        } else {
+          techName = "Manual Allocation Required";
+        }
+      }
+
       return {
         ...fault,
         assetName: asset ? asset.name : "Unknown Machine",
+        assignedTechnician: techName,
       };
     })
   );
@@ -97,6 +117,21 @@ export default async function ClinicalDashboard() {
                       {fault.department} · {fault.category} · {fault.id}
                     </div>
                     <p className="text-sm text-slate-600 mt-2 line-clamp-2">{fault.description}</p>
+                    
+                    {fault.status !== "RESOLVED" && (
+                      <div className="mt-2 text-xs font-semibold text-slate-700 bg-slate-50 border border-slate-150 px-2 py-1 rounded w-fit flex items-center gap-1.5 shadow-2xs">
+                        <div className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse shrink-0" />
+                        <span>Assigned Engineer: <span className="text-primary font-bold">{fault.assignedTechnician}</span></span>
+                      </div>
+                    )}
+                    
+                    {fault.status === "RESOLVED" && (
+                      <div className="mt-2 text-xs font-semibold text-emerald-800 bg-emerald-50 border border-emerald-100 px-2 py-1 rounded w-fit flex items-center gap-1.5 shadow-2xs">
+                        <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
+                        <span>Resolved by: <span className="font-bold">{fault.assignedTechnician}</span></span>
+                      </div>
+                    )}
+
                     {fault.images && fault.images.length > 0 && (
                       <div className="mt-2 text-xs text-primary font-medium">
                         🖼️ {fault.images.length} {fault.images.length === 1 ? "Image" : "Images"} attached

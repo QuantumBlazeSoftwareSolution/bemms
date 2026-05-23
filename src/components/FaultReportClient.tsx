@@ -18,6 +18,7 @@ interface Asset {
   brand: string;
   model: string;
   department: string;
+  qrCode?: string | null;
 }
 
 interface FaultReportClientProps {
@@ -29,8 +30,11 @@ export function FaultReportClient({ assets }: FaultReportClientProps) {
   const initialAssetId = searchParams.get("assetId") || "";
   
   // Validate if the query param asset ID exists in our database
+  // It could match the ID column OR the raw qrCode column!
   const matchedAsset = assets.find(
-    (a) => a.id.toLowerCase() === initialAssetId.toLowerCase()
+    (a) =>
+      a.id.toLowerCase() === initialAssetId.toLowerCase() ||
+      (a.qrCode && a.qrCode.toLowerCase() === initialAssetId.toLowerCase())
   );
 
   const [selectedAsset, setSelectedAsset] = useState(matchedAsset ? matchedAsset.id : "");
@@ -114,16 +118,28 @@ export function FaultReportClient({ assets }: FaultReportClientProps) {
             </Label>
             <Select onValueChange={(val) => setSelectedAsset(val ?? "")} value={selectedAsset} disabled={loading}>
               <SelectTrigger id="asset">
-                <SelectValue placeholder="Select equipment..." />
+                <SelectValue placeholder="Select equipment...">
+                  {selectedAsset
+                    ? assets.find((a) => a.id === selectedAsset)?.name
+                    : undefined}
+                </SelectValue>
               </SelectTrigger>
               <SelectContent>
                 {assets.map((asset) => (
                   <SelectItem key={asset.id} value={asset.id}>
-                    {asset.name} ({asset.id}) — {asset.department}
+                    {asset.name} ({asset.brand} - {asset.model}) — {asset.department}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
+            {selectedAsset && (
+              <div className="mt-1.5 text-xs text-slate-500 font-mono bg-slate-50 border border-slate-100 p-2 rounded-lg flex items-center justify-between">
+                <span>⚙️ Asset ID: <span className="font-semibold text-slate-700">{selectedAsset}</span></span>
+                <span className="text-primary font-semibold text-[10px] uppercase">
+                  {assets.find((a) => a.id === selectedAsset)?.department}
+                </span>
+              </div>
+            )}
           </div>
           <div className="space-y-2">
             <Label htmlFor="category">

@@ -12,6 +12,7 @@ export default async function TechnicianFaultReportPage() {
     brand: asset.brand,
     model: asset.model,
     department: asset.department,
+    qrCode: asset.qrCode,
   }));
 
   return (
