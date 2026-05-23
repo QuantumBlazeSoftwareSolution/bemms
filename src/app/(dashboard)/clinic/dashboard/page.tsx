@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { AlertCircle, Clock, QrCode, TriangleAlert } from "lucide-react";
 import { getAllFaults } from "@/lib/db/crud/faults/read";
 import { getAssetById } from "@/lib/db/crud/assets/read";
+import { ClinicalQRScanner } from "@/components/ClinicalQRScanner";
 import Link from "next/link";
 
 export default async function ClinicalDashboard() {
@@ -65,15 +66,7 @@ export default async function ClinicalDashboard() {
           </div>
         </Link>
 
-        <div className="flex flex-col items-center justify-center gap-3 p-8 rounded-xl bg-slate-800 text-white cursor-pointer hover:bg-slate-700 transition-all shadow-lg active:scale-95">
-          <div className="w-14 h-14 rounded-full bg-white/20 flex items-center justify-center">
-            <QrCode className="w-7 h-7" />
-          </div>
-          <div className="text-center">
-            <div className="font-bold text-lg">Scan Equipment QR</div>
-            <div className="text-sm text-white/80 mt-0.5">Instant report via QR code</div>
-          </div>
-        </div>
+        <ClinicalQRScanner />
       </div>
 
       {/* Info note */}

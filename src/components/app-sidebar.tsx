@@ -31,9 +31,14 @@ import {
 } from "lucide-react"
 import Link from "next/link"
 
-// ─── Nav config per role ────────────────────────────────────────────────────
+interface NavItem {
+  href: string;
+  label: string;
+  icon: any;
+  danger?: boolean;
+}
 
-const adminNav = [
+const adminNav: NavItem[] = [
   { href: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/assets", label: "Asset Management", icon: Activity },
   { href: "/maintenance", label: "Maintenance", icon: Wrench },
@@ -41,14 +46,13 @@ const adminNav = [
   { href: "/fault-report", label: "Report Fault", icon: AlertTriangle, danger: true },
 ]
 
-const technicianNav = [
+const technicianNav: NavItem[] = [
   { href: "/technician/dashboard", label: "My Workspace", icon: LayoutDashboard },
   { href: "/technician/assets", label: "Equipment List", icon: Activity },
   { href: "/technician/maintenance", label: "My Tasks", icon: ClipboardList },
-  { href: "/technician/fault-report", label: "Report Fault", icon: AlertTriangle, danger: true },
 ]
 
-const clinicalNav = [
+const clinicalNav: NavItem[] = [
   { href: "/clinic/dashboard", label: "My Dashboard", icon: LayoutDashboard },
   { href: "/fault-report", label: "Report a Fault", icon: AlertTriangle, danger: true },
   { href: "/clinic/dashboard", label: "My Submissions", icon: ClipboardList },

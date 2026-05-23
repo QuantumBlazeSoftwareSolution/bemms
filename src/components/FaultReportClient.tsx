@@ -27,13 +27,23 @@ interface FaultReportClientProps {
 export function FaultReportClient({ assets }: FaultReportClientProps) {
   const searchParams = useSearchParams();
   const initialAssetId = searchParams.get("assetId") || "";
-  const [selectedAsset, setSelectedAsset] = useState(initialAssetId);
+  
+  // Validate if the query param asset ID exists in our database
+  const matchedAsset = assets.find(
+    (a) => a.id.toLowerCase() === initialAssetId.toLowerCase()
+  );
+
+  const [selectedAsset, setSelectedAsset] = useState(matchedAsset ? matchedAsset.id : "");
   const [category, setCategory] = useState("");
   const [priority, setPriority] = useState("MEDIUM");
   const [description, setDescription] = useState("");
   const [images, setImages] = useState<string[]>([""]); // Multi-image links array
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState(
+    !matchedAsset && initialAssetId !== ""
+      ? `⚠️ Scanned tag "${initialAssetId}" does not match any registered equipment in BEMMS. Please select a valid machine below.`
+      : ""
+  );
   const [success, setSuccess] = useState(false);
   const router = useRouter();
 

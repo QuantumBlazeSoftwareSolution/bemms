@@ -30,6 +30,7 @@ export function AddAssetClient() {
   const [success, setSuccess] = useState(false);
 
   const qrInstanceRef = useRef<any>(null);
+  const hasScannedRef = useRef(false);
   const router = useRouter();
 
   const stopScanner = (instance: any) => {
@@ -48,6 +49,7 @@ export function AddAssetClient() {
     let html5Qrcode: any = null;
 
     if (scannerOpen) {
+      hasScannedRef.current = false;
       // Dynamic import to prevent SSR crashes
       import("html5-qrcode").then(({ Html5Qrcode }) => {
         try {
@@ -61,10 +63,21 @@ export function AddAssetClient() {
               qrbox: { width: 200, height: 200 },
             },
             (decodedText: string) => {
-              // Successfully decoded
+              if (hasScannedRef.current) return;
+              hasScannedRef.current = true;
+
               setScannedId(decodedText.trim());
-              setScannerOpen(false);
-              stopScanner(html5Qrcode);
+              
+              if (html5Qrcode && html5Qrcode.isScanning) {
+                html5Qrcode.stop().then(() => {
+                  setScannerOpen(false);
+                }).catch((err: any) => {
+                  console.warn("Failed to stop scanner gracefully:", err);
+                  setScannerOpen(false);
+                });
+              } else {
+                setScannerOpen(false);
+              }
             },
             (errorMessage: string) => {
               // Verbose scanning logs - can ignore
