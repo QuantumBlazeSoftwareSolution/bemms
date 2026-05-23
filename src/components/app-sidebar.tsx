@@ -43,9 +43,9 @@ const adminNav = [
 
 const technicianNav = [
   { href: "/technician/dashboard", label: "My Workspace", icon: LayoutDashboard },
-  { href: "/assets", label: "Equipment List", icon: Activity },
-  { href: "/maintenance", label: "My Tasks", icon: ClipboardList },
-  { href: "/fault-report", label: "Report Fault", icon: AlertTriangle, danger: true },
+  { href: "/technician/assets", label: "Equipment List", icon: Activity },
+  { href: "/technician/maintenance", label: "My Tasks", icon: ClipboardList },
+  { href: "/technician/fault-report", label: "Report Fault", icon: AlertTriangle, danger: true },
 ]
 
 const clinicalNav = [

@@ -83,7 +83,7 @@ export default async function TechnicianDashboard() {
             Welcome back, <span className="font-semibold text-primary">{me.name}</span> — {me.specialty || "Biomedical Engineer"}
           </p>
         </div>
-        <Link href="/maintenance">
+        <Link href="/technician/maintenance">
           <Button className="flex items-center gap-2">
             <ClipboardList className="w-4 h-4" /> Log Service
           </Button>
@@ -174,7 +174,7 @@ export default async function TechnicianDashboard() {
                   <div className="flex items-center gap-1 text-xs text-slate-500">
                     <CalendarCheck className="w-3 h-3" /> {task.scheduledDate}
                   </div>
-                  <Link href={`/assets/${task.assetId}`}>
+                  <Link href={`/technician/assets/${task.assetId}`}>
                     <Button variant="outline" size="sm" className="h-7 text-xs">
                       View Asset
                     </Button>

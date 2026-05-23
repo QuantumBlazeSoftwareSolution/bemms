@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { QrCode, Search, Filter } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 interface Asset {
   id: string;
@@ -37,6 +38,9 @@ interface AssetsListClientProps {
 }
 
 export function AssetsListClient({ initialAssets }: AssetsListClientProps) {
+  const pathname = usePathname();
+  const isTechnician = pathname.startsWith("/technician");
+  
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedDept, setSelectedDept] = useState("ALL");
 
@@ -141,12 +145,12 @@ export function AssetsListClient({ initialAssets }: AssetsListClientProps) {
                 <TableCell>{getStatusBadge(asset.status)}</TableCell>
                 <TableCell className="text-right">
                   <div className="flex justify-end gap-2">
-                    <Link href={`/assets/${asset.id}`}>
+                    <Link href={`${isTechnician ? "/technician" : ""}/assets/${asset.id}`}>
                       <Button variant="outline" size="sm" className="h-8 text-xs font-medium border-slate-200">
                         View Details
                       </Button>
                     </Link>
-                    <Link href={`/assets/${asset.id}`}>
+                    <Link href={`${isTechnician ? "/technician" : ""}/assets/${asset.id}`}>
                       <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-400 hover:text-primary">
                         <QrCode className="w-4 h-4" />
                       </Button>
