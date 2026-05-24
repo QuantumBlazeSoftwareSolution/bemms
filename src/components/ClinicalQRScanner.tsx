@@ -25,15 +25,18 @@ export function ClinicalQRScanner() {
     }
   };
 
+  const openScanner = () => {
+    setScanError("");
+    setScannedId("");
+    hasScannedRef.current = false;
+    setScannerOpen(true);
+  };
+
   // Handle QR scanner initialization and shutdown
   useEffect(() => {
     let html5Qrcode: any = null;
 
     if (scannerOpen) {
-      setScanError("");
-      setScannedId("");
-      hasScannedRef.current = false;
-      
       // Dynamic import to prevent SSR crashes
       import("html5-qrcode").then(({ Html5Qrcode }) => {
         try {
@@ -87,13 +90,13 @@ export function ClinicalQRScanner() {
         stopScanner(html5Qrcode);
       }
     };
-  }, [scannerOpen]);
+  }, [scannerOpen, router]);
 
   return (
     <>
       {/* Interactive Trigger Card */}
       <div 
-        onClick={() => setScannerOpen(true)}
+        onClick={openScanner}
         className="flex flex-col items-center justify-center gap-3 p-8 rounded-xl bg-slate-800 text-white cursor-pointer hover:bg-slate-700 transition-all shadow-lg active:scale-95 text-center select-none"
       >
         <div className="w-14 h-14 rounded-full bg-white/20 flex items-center justify-center">
@@ -109,6 +112,10 @@ export function ClinicalQRScanner() {
       <Dialog open={scannerOpen} onOpenChange={(open) => {
         if (!open) {
           stopScanner(null);
+        } else {
+          setScanError("");
+          setScannedId("");
+          hasScannedRef.current = false;
         }
         setScannerOpen(open);
       }}>
