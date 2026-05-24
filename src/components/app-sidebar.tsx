@@ -23,7 +23,6 @@ import {
   AlertTriangle,
   LayoutDashboard,
   LogOut,
-  Settings,
   Stethoscope,
   Users,
   Wrench,
@@ -152,13 +151,9 @@ export function AppSidebar() {
       </SidebarContent>
 
       <SidebarFooter className="p-4 border-t border-slate-100">
-        <div className="flex items-center gap-2 text-muted-foreground hover:text-slate-800 cursor-pointer transition-colors">
-          <Settings className="w-5 h-5" />
-          <span className="text-sm font-medium">Settings</span>
-        </div>
         <button
           onClick={handleLogout}
-          className="flex w-full items-center gap-2 mt-3 text-destructive/70 hover:text-destructive transition-colors cursor-pointer text-left bg-transparent border-0 p-0"
+          className="flex w-full items-center gap-2 text-destructive/70 hover:text-destructive transition-colors cursor-pointer text-left bg-transparent border-0 p-0"
         >
           <LogOut className="w-5 h-5" />
           <span className="text-sm font-medium">Logout</span>

@@ -6,6 +6,7 @@ import { getAssetById } from "@/lib/db/crud/assets/read";
 import { getAllTasks } from "@/lib/db/crud/tasks/read";
 import { getUserById } from "@/lib/db/crud/users/read";
 import { ClinicalQRScanner } from "@/components/ClinicalQRScanner";
+import { EvidenceGallery } from "@/components/EvidenceGallery";
 import Link from "next/link";
 
 export default async function ClinicalDashboard() {
@@ -132,11 +133,7 @@ export default async function ClinicalDashboard() {
                       </div>
                     )}
 
-                    {fault.images && fault.images.length > 0 && (
-                      <div className="mt-2 text-xs text-primary font-medium">
-                        🖼️ {fault.images.length} {fault.images.length === 1 ? "Image" : "Images"} attached
-                      </div>
-                    )}
+                    <EvidenceGallery images={fault.images} />
                   </div>
                   <div className="flex flex-col items-end gap-2 shrink-0">
                     {getStatusBadge(fault.status)}

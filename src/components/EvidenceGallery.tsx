@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { X, ZoomIn, Download } from "lucide-react";
 
 interface EvidenceGalleryProps {
-  images: string[];
+  images: string[] | null | undefined;
 }
 
 export function EvidenceGallery({ images }: EvidenceGalleryProps) {
@@ -28,26 +28,16 @@ export function EvidenceGallery({ images }: EvidenceGalleryProps) {
   if (!images || images.length === 0) return null;
 
   return (
-    <div className="mt-3">
-      <span className="text-xs font-semibold text-slate-500 block mb-1.5">
-        🖼️ Evidence Photos ({images.length}):
-      </span>
-      <div className="flex flex-wrap gap-2">
+    <>
+      <div className="mt-2.5 flex flex-wrap gap-x-4 gap-y-1">
         {images.map((imgUrl, i) => (
           <button
             key={i}
             onClick={() => setSelectedImage(imgUrl)}
             type="button"
-            className="group relative w-16 h-16 rounded-md overflow-hidden border border-slate-200 hover:border-primary transition-all duration-200 hover:scale-105 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1"
+            className="inline-flex items-center gap-1 text-xs text-blue-600 hover:text-blue-500 font-semibold hover:underline cursor-pointer focus:outline-none"
           >
-            <img
-              src={imgUrl}
-              alt={`Evidence ${i + 1}`}
-              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-            />
-            <div className="absolute inset-0 bg-black/35 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
-              <ZoomIn className="w-4 h-4 text-white drop-shadow" />
-            </div>
+            🖼️ {images.length === 1 ? "1 Image attached" : `Image ${i + 1}`}
           </button>
         ))}
       </div>
@@ -94,6 +84,6 @@ export function EvidenceGallery({ images }: EvidenceGalleryProps) {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 }
