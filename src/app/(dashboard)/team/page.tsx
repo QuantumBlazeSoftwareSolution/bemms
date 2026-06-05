@@ -33,7 +33,7 @@ export default async function TeamPage() {
             Monitor technician workload and assign maintenance tasks.
           </p>
         </div>
-        <Link href="/signup">
+        <Link href="/team/add">
           <Button className="flex items-center gap-2 shadow-sm">
             <UserPlus className="w-4 h-4" /> Add Technician
           </Button>

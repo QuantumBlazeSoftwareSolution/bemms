@@ -134,3 +134,51 @@ export async function signOutAction() {
 export async function getCurrentUserAction(): Promise<SessionUser | null> {
   return await getServerSession();
 }
+
+export async function registerTechnicianByAdminAction(prevState: any, formData: FormData) {
+  try {
+    const admin = await getCurrentUserAction();
+    if (!admin || admin.role !== "ADMIN") {
+      return { success: false, error: "Unauthorized: Only administrators can register technicians." };
+    }
+
+    const name = formData.get("name") as string;
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+    const specialty = formData.get("specialty") as string;
+
+    if (!name || !email || !password) {
+      return { success: false, error: "Missing required fields." };
+    }
+
+    const existingUser = await getUserByEmail(email);
+    if (existingUser) {
+      return { success: false, error: "Email is already registered." };
+    }
+
+    const passwordHash = bcrypt.hashSync(password, 10);
+
+    const newUser = await createUser({
+      name,
+      email,
+      passwordHash,
+      role: "TECHNICIAN",
+      specialty: specialty || "General Electronics & Monitoring",
+      status: "Available",
+    });
+
+    if (!newUser) {
+      return { success: false, error: "Could not create technician." };
+    }
+
+    await logActivity(
+      `Registered new Technician account: ${newUser.name} (${newUser.specialty})`,
+      `Admin. ${admin.name}`
+    );
+
+    return { success: true, user: newUser };
+  } catch (error: any) {
+    console.error("Register technician error:", error);
+    return { success: false, error: error.message || "An unexpected error occurred." };
+  }
+}
