@@ -11,7 +11,7 @@ export async function signInAction(prevState: any, formData: FormData) {
   try {
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
-    const roleInput = formData.get("role") as string; // E.g., "admin", "technician", "clinical"
+    const roleInput = formData.get("role") as string;
 
     if (!email || !password || !roleInput) {
       return { success: false, error: "Please enter email, password, and select your role." };
